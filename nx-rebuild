@@ -1,5 +1,0 @@
-#!/usr/bin/env nix-shell
-#!nix-shell -i bash -p lua5_4_compat
-clear
-
-lua main.lua
