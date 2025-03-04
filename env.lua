@@ -6,9 +6,4 @@ local core = require("llw-core")
 core.globalize(core)
 local utils = require("modules.utils")
 local conf = utils.get_configuration("./example-config.lua")
-
-msg(conf)
-
-if conf.debug_mode then dofile("app.lua") end
-
-dofile("tests.lua")
+if conf.debug_mode then dofile("tests.lua") end

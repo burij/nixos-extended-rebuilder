@@ -1,6 +1,5 @@
 print(
 [[
-
 debug mode is on.
 to run in production mode comment out or remove dofile("tests.lua") from main]]
 )

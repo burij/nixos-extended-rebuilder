@@ -13,7 +13,7 @@ pkgs.mkShell {
 	];
 
 	shellHook = ''
-		alias run='lua main.lua'
+		alias run='lua app.lua'
 		luarocks install lua-light-wings --tree ./pkgs
 	'';
 }
