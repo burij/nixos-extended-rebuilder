@@ -1,5 +1,5 @@
-dofile("env.lua")
-local utils = require("modules.utils")
+dofile "env.lua"
+local utils = require "modules.utils"
 
 local function application()
     local conf = utils.get_configuration("./example-config.lua")
