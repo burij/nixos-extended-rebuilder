@@ -14,7 +14,8 @@ pkgs.stdenv.mkDerivation {
   src = ./.;
 
   llwCoreLua = pkgs.fetchurl {
-    url = "https://raw.githubusercontent.com/burij/lua-light-wings/refs/tags/v.0.1.0/modules/llw-core.lua";
+    url = "https://raw.githubusercontent.com/burij/lua-light-wings/refs/tags/"
+      +"v.0.1.0/modules/llw-core.lua";
     sha256 = "sha256-mRD1V0ERFi4gmE/VfAnd1ujoyoxlA0vCj9fJNSCtPkw=";
   };
 
