@@ -20,7 +20,7 @@ pkgs.stdenv.mkDerivation {
 
   buildInputs = with pkgs; [
     wget
-    (lua5_4.withPackages (ps: with ps; [ inspect ]))
+    (lua5_4.withPackages (ps: with ps; [ inspect luafilesystem ]))
   ];
 
   installPhase = ''
@@ -33,8 +33,18 @@ pkgs.stdenv.mkDerivation {
     # Create the lua binary wrapper with proper environment
     cat > $out/bin/lua <<EOF
     #!${pkgs.stdenv.shell}
-    export LUA_PATH="${pkgs.lua54Packages.inspect}/share/lua/5.4/?.lua;${pkgs.lua54Packages.inspect}/share/lua/5.4/?/init.lua;$out/?.lua;$out/?/init.lua"
-    export LUA_CPATH="${pkgs.lua54Packages.inspect}/lib/lua/5.4/?.so;$out/?.so"
+    export LUA_PATH="\
+    ${pkgs.lua54Packages.inspect}/share/lua/5.4/?.lua;\
+    ${pkgs.lua54Packages.inspect}/share/lua/5.4/?/init.lua;\
+    ${pkgs.lua54Packages.luafilesystem}/share/lua/5.4/?.lua;\
+    ${pkgs.lua54Packages.luafilesystem}/share/lua/5.4/?/init.lua;\
+    $out/?.lua;$out/?/init.lua"
+
+    export LUA_CPATH="\
+    ${pkgs.lua54Packages.inspect}/lib/lua/5.4/?.so;\
+    ${pkgs.lua54Packages.luafilesystem}/lib/lua/5.4/?.so;\
+    $out/?.so"
+
     exec ${pkgs.lua5_4}/bin/lua "\$@"
     EOF
 

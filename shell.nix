@@ -9,6 +9,7 @@ pkgs.mkShell {
 		(lua5_4.withPackages(ps: with ps; [
 			luarocks
 			inspect
+			luafilesystem
 		]))
 	];
 
