@@ -31,7 +31,7 @@ pkgs.stdenv.mkDerivation {
     cp $llwCoreLua $out/llw-core.lua
 
     # Create the lua binary wrapper with proper environment
-    cat > $out/bin/lua <<EOF
+    cat > $out/bin/nx-rebuild <<EOF
     #!${pkgs.stdenv.shell}
     export LUA_PATH="\
     ${pkgs.lua54Packages.inspect}/share/lua/5.4/?.lua;\
@@ -45,11 +45,10 @@ pkgs.stdenv.mkDerivation {
     ${pkgs.lua54Packages.luafilesystem}/lib/lua/5.4/?.so;\
     $out/?.so"
 
-    exec ${pkgs.lua5_4}/bin/lua "\$@"
+    exec ${pkgs.lua5_4}/bin/lua "$out/app.lua"
     EOF
 
-    chmod +x $out/bin/lua
-    install -m 755 ./wrapper.sh $out/bin/nx-rebuild
+    chmod +x $out/bin/nx-rebuild
   '';
 
   meta = {
