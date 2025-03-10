@@ -16,5 +16,6 @@ pkgs.mkShell {
 	shellHook = ''
 		alias run='lua app.lua'
 		luarocks install lua-light-wings --tree ./pkgs
+		wget -O need.lua https://raw.githubusercontent.com/burij/lua-light-wings/refs/heads/main/modules/need.lua
 	'';
 }

@@ -1,7 +1,7 @@
 commands = {}
 dependencies = {
    ["lua-light-wings"] = {
-      ["0.1-0"] = {
+      ["0.2-1"] = {
          {
             constraints = {
                {
@@ -17,23 +17,27 @@ dependencies = {
    }
 }
 modules = {
-   ["llw-core"] = {
-      "lua-light-wings/0.1-0"
+   ["lua-light-wings"] = {
+      "lua-light-wings/0.2-1"
    },
-   ["llw-extended-lib"] = {
-      "lua-light-wings/0.1-0"
+   ["lua-light-wings-extra"] = {
+      "lua-light-wings/0.2-1"
+   },
+   need = {
+      "lua-light-wings/0.2-1"
    }
 }
 repository = {
    ["lua-light-wings"] = {
-      ["0.1-0"] = {
+      ["0.2-1"] = {
          {
             arch = "installed",
             commands = {},
             dependencies = {},
             modules = {
-               ["llw-core"] = "llw-core.lua",
-               ["llw-extended-lib"] = "llw-extended-lib.lua"
+               ["lua-light-wings"] = "lua-light-wings.lua",
+               ["lua-light-wings-extra"] = "lua-light-wings-extra.lua",
+               need = "need.lua"
             }
          }
       }
