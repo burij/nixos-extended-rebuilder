@@ -13,7 +13,7 @@ let
     ]))
   ];
 
-  myDevShell = pkgs.mkShell {
+  shell = pkgs.mkShell {
     buildInputs = dependencies;
     shellHook = ''
       		  alias run='lua main.lua'
@@ -22,7 +22,7 @@ let
     '';
   };
 
-  myPackage = pkgs.stdenv.mkDerivation {
+  package = pkgs.stdenv.mkDerivation {
     pname = "mein-projekt";
     version = "0.1.0";
     src = ./.;
@@ -60,10 +60,5 @@ let
       chmod +x $out/bin/nx-rebuild
     '';
   };
-
-
 in
-{
-  # package = myPackage;
-  shell = myDevShell;
-}
+shell
