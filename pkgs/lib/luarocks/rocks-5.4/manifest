@@ -1,7 +1,7 @@
 commands = {}
 dependencies = {
    ["lua-light-wings"] = {
-      ["0.2-1"] = {
+      ["0.2-2"] = {
          {
             constraints = {
                {
@@ -18,18 +18,18 @@ dependencies = {
 }
 modules = {
    ["lua-light-wings"] = {
-      "lua-light-wings/0.2-1"
+      "lua-light-wings/0.2-2"
    },
    ["lua-light-wings-extra"] = {
-      "lua-light-wings/0.2-1"
+      "lua-light-wings/0.2-2"
    },
    need = {
-      "lua-light-wings/0.2-1"
+      "lua-light-wings/0.2-2"
    }
 }
 repository = {
    ["lua-light-wings"] = {
-      ["0.2-1"] = {
+      ["0.2-2"] = {
          {
             arch = "installed",
             commands = {},

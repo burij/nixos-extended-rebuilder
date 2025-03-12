@@ -1,3 +1,5 @@
+local autodownload = false
+--------------------------------------------------------------------------------
 local M = function (module, source)
     -- phase 1: extend paths, if not already done
     local version = _VERSION:match("%d+%.%d+")
@@ -7,7 +9,7 @@ local M = function (module, source)
         "./modules/?.lua",
         custom_path .. "/?.lua",
         "./pkgs/share/lua/" .. version .. "/?.lua",
-        "./share/lua/" .. version .. "/?/init.lua",
+        "./pkgs/share/lua/" .. version .. "/?/init.lua",
         "/home/" .. user .. "/.luarocks/share/lua/" .. version .. "/?.lua",
         "/home/" .. user .. "/.luarocks/share/lua/" .. version .. "/?/init.lua",
     }
@@ -30,32 +32,35 @@ local M = function (module, source)
         return ok and y
     end
 
-    -- try find via luarocks
-    if not is_module_available(module) then
-        local query = source or module
-        os.execute([[luarocks install "]] .. query .. [[" --local]])
-    end
+    if autodownload == true then
+        -- try find via luarocks
+        if not is_module_available(module) then
+            local query = source or module
+            os.execute([[luarocks install "]] .. query .. [[" --local]])
+        end
 
-        -- try find via luarocks inside result (for test builds in NixOS)
-    if not is_module_available(module) then
-        local query = source or module
-        os.execute([[./result/bin/luarocks install "]] .. query .. [[" --local]])
-    end
+            -- try find via luarocks inside result (for test builds in NixOS)
+        if not is_module_available(module) then
+            local query = source or module
+            os.execute([[./result/bin/luarocks install "]] .. query
+                .. [[" --local]])
+        end
 
-    -- try download via curl
-    if not is_module_available(module)
-    and string.find(source, "https://", 1, true) then
-        os.execute("mkdir " .. custom_path)
-        os.execute([[curl -O ]] .. custom_path .. [[/]]
-            .. module .. [[.lua ]] .. source)
-    end
+        -- try download via curl
+        if not is_module_available(module)
+        and string.find(source, "https://", 1, true) then
+            os.execute("mkdir " .. custom_path)
+            os.execute([[curl -O ]] .. custom_path .. [[/]]
+                .. module .. [[.lua ]] .. source)
+        end
 
-    -- try download via wget
-    if not is_module_available(module)
-    and string.find(source, "https://", 1, true) then
-        os.execute("mkdir " .. custom_path)
-        os.execute([[wget -O ]] .. custom_path .. [[/]]
-            .. module .. [[.lua ]] .. source)
+        -- try download via wget
+        if not is_module_available(module)
+        and string.find(source, "https://", 1, true) then
+            os.execute("mkdir " .. custom_path)
+            os.execute([[wget -O ]] .. custom_path .. [[/]]
+                .. module .. [[.lua ]] .. source)
+        end
     end
 
     -- last check. if still fails, give warning or sucseed

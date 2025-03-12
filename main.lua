@@ -3,7 +3,6 @@ local core = need "lua-light-wings" core.globalize(core)
 local utils = need "utils"
 local conf = utils.get_configuration("./example-config.lua")
 if conf.debug_mode then dofile("tests.lua") end
-
 --------------------------------------------------------------------------------
 
 local function application()
