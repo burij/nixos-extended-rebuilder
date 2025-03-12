@@ -26,6 +26,7 @@ let
         sha256 = "sha256-w6ie/GiCiMywXgVmDg6WtUsTFa810DTGo1jAHV5pi/A=";
       }} ./need.lua
 
+      nixpkgs-fmt default.nix
     '';
   };
 
