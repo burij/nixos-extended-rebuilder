@@ -3,6 +3,7 @@
 let
   nixpkgs = fetchTarball "https://github.com/NixOS/nixpkgs/tarball/nixos-24.11";
   pkgs = import nixpkgs { config = { }; overlays = [ ]; };
+
   dependencies = with pkgs; [
     wget
     nixpkgs-fmt
@@ -16,9 +17,15 @@ let
   shell = pkgs.mkShell {
     buildInputs = dependencies;
     shellHook = ''
-      		  alias run='lua main.lua'
-      		  luarocks install lua-light-wings --local
-      		  wget -O need.lua https://raw.githubusercontent.com/burij/lua-light-wings/refs/heads/main/modules/need.lua
+      alias run='lua main.lua'
+      luarocks install lua-light-wings --local
+
+      cp ${pkgs.fetchurl {
+        url = "https://raw.githubusercontent.com/burij/"
+          +"lua-light-wings/refs/heads/main/modules/need.lua";
+        sha256 = "sha256-w6ie/GiCiMywXgVmDg6WtUsTFa810DTGo1jAHV5pi/A=";
+      }} ./need.lua
+
     '';
   };
 
