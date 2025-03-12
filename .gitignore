@@ -1,7 +1,3 @@
-# Special folders
-/pkgs
-/result
-
 # Compiled Lua sources
 luac.out
 
