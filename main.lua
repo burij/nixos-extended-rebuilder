@@ -17,7 +17,13 @@ local function application()
 end
 
 --------------------------------------------------------------------------------
-
+conf.upgrade = [[
+echo "NixOS update..."
+sudo nixos-rebuild switch --upgrade
+nixos-rebuild list-generations | grep current
+flatpak update -y
+notify-send -e "NixOS upgrade finished" --icon=software-update-available
+]]
 
 
 application()
