@@ -11,6 +11,9 @@ local function application()
         msg("content of the loaded configuration:")
         msg(conf)
     end
+
+    msg(arg[1])
+
 end
 
 --------------------------------------------------------------------------------

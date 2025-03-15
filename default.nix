@@ -18,13 +18,18 @@ let
     buildInputs = dependencies;
     shellHook = ''
       alias run='lua main.lua'
-      luarocks install lua-light-wings --local
 
       cp ${pkgs.fetchurl {
         url = "https://raw.githubusercontent.com/burij/"
           +"lua-light-wings/refs/heads/main/modules/need.lua";
         sha256 = "sha256-w6ie/GiCiMywXgVmDg6WtUsTFa810DTGo1jAHV5pi/A=";
       }} ./need.lua
+
+      cp ${pkgs.fetchurl {
+        url = "https://raw.githubusercontent.com/burij/"
+          +"lua-light-wings/refs/heads/main/modules/lua-light-wings.lua";
+        sha256 = "sha256-mRD1V0ERFi4gmE/VfAnd1ujoyoxlA0vCj9fJNSCtPkw=";
+      }} ./modules/lua-light-wings.lua
 
       nixpkgs-fmt default.nix
     '';
