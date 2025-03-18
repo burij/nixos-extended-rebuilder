@@ -14,21 +14,13 @@ local function application()
         msg(conf)
     end
 
-    M.arg_present(arg, "rebuild")
+    msg(
+        utils.value_in_table("rebuild", arg)
+    )
 
 end
 
 --------------------------------------------------------------------------------
-
-function M.arg_present(x, y)
--- TODO: returns true, if value y is present in table x
-    is_dictionary(x)
-    is_string(y)
-    map(x, msg)
-    local output = true
-    if conf.debug_mode then msg(output) end
-    return is_boolean(output)
-end
 
 
 conf.upgrade = [[
