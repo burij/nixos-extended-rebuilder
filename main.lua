@@ -1,4 +1,4 @@
-need = require "need"
+_G.need = require "need"
 local core = need "lua-light-wings" core.globalize(core)
 local utils = need "utils"
 local conf = utils.get_configuration("conf.lua")
@@ -14,22 +14,23 @@ local function application()
         msg(conf)
     end
 
-    msg(
-        utils.value_in_table("rebuild", arg)
-    )
+    if utils.value_in_table("upgrade", arg) then
+        M.upgrade_system(conf.entry_path)
+    end
 
 end
 
 --------------------------------------------------------------------------------
 
-
-conf.upgrade = [[
-echo "NixOS update..."
-sudo nixos-rebuild switch --upgrade
-nixos-rebuild list-generations | grep current
-flatpak update -y
-notify-send -e "NixOS upgrade finished" --icon=software-update-available
-]]
-
+function M.upgrade_system(x)
+-- runs complete system upgrade
+    local path = is_path(x) or "/etc/nixos/configuration.nix"
+    msg "NixOS upgrade..."
+    --TODO add flatpak declarativ flatpak rebuilder
+    os.execute("sudo nixos-rebuild switch --upgrade -I nixos-config=" .. path)
+    msg("taking care of flatpaks...")
+    os.execute("flatpak update -y")
+    os.execute("nixos-rebuild list-generations | grep current")
+end
 
 application()
