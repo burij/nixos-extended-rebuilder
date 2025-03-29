@@ -19,6 +19,7 @@ let
     buildInputs = [ luaEnv dependencies ];
     shellHook = ''
       alias run='lua main.lua'
+      alias nx='lua main.lua'
 
       cp ${pkgs.fetchurl {
         url = "https://raw.githubusercontent.com/burij/"
@@ -37,7 +38,7 @@ let
   };
 
   package = pkgs.stdenv.mkDerivation {
-    pname = "nx-rebuild";
+    pname = "nx";
     version = "1.0.0";
 
     src = ./.;
@@ -53,7 +54,7 @@ let
     extraFile = pkgs.fetchurl {
       url = "https://github.com/burij/lua-light-wings/blob/"
         + "v.0.2.2/modules/lua-light-wings.lua";
-      sha256 = "sha256-yxHvWYPxQoth9b0kh/xXF5E+Rghh/PieFApVtMKnTkQ=";
+      sha256 = "sha256-vJHfVI9RhXjiTOgCpjJAXa4h44ADVHUBBhBSdFmILl0=";
     };
 
     nativeBuildInputs = [ pkgs.makeWrapper ];
@@ -87,4 +88,4 @@ let
     };
   };
 in
-package
+shell
