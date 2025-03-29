@@ -4,18 +4,19 @@ let
   nixpkgs = fetchTarball "https://github.com/NixOS/nixpkgs/tarball/nixos-24.11";
   pkgs = import nixpkgs { config = { }; overlays = [ ]; };
 
+  luaEnv = pkgs.lua5_4.withPackages (ps: with ps; [
+    luarocks
+    luafilesystem
+    inspect
+  ]);
+
   dependencies = with pkgs; [
     wget
     nixpkgs-fmt
-    (lua5_4.withPackages (ps: with ps; [
-      luarocks
-      inspect
-      luafilesystem
-    ]))
   ];
 
   shell = pkgs.mkShell {
-    buildInputs = dependencies;
+    buildInputs = [ luaEnv dependencies ];
     shellHook = ''
       alias run='lua main.lua'
 
@@ -36,42 +37,54 @@ let
   };
 
   package = pkgs.stdenv.mkDerivation {
-    pname = "mein-projekt";
-    version = "0.1.0";
+    pname = "nx-rebuild";
+    version = "1.0.0";
+
     src = ./.;
-    llwCoreLua = pkgs.fetchurl {
-      url = "https://raw.githubusercontent.com/burij/lua-light-wings/"
-        + "refs/tags/v.0.1.0/modules/llw-core.lua";
-      sha256 = "sha256-mRD1V0ERFi4gmE/VfAnd1ujoyoxlA0vCj9fJNSCtPkw=";
+
+    # Template for remote source
+    # src = pkgs.fetchFromGitHub {
+    #   owner = "burij";
+    #   repo = "hpln";
+    #   rev = "0.2";
+    #   sha256 = "sha256-H+ns/5mkbKuSQQwQ6vaECTmveSBYBUMr6YRRKokFKck=";
+    # };
+
+    extraFile = pkgs.fetchurl {
+      url = "https://github.com/burij/lua-light-wings/blob/"
+        + "v.0.2.2/modules/lua-light-wings.lua";
+      sha256 = "sha256-yxHvWYPxQoth9b0kh/xXF5E+Rghh/PieFApVtMKnTkQ=";
     };
-    buildInputs = dependencies;
+
+    nativeBuildInputs = [ pkgs.makeWrapper ];
+    buildInputs = [ luaEnv dependencies ];
+
     installPhase = ''
-      echo "Listing files in source directory"
-      ls -l $src  # Check what files are in the fetched source directory
       mkdir -p $out/bin
-      cp -r $src/* $out/
-      cp $llwCoreLua $out/llw-core.lua
+      mkdir -p $out/lib
+      cp -r . $out/lib/$pname
+      cp $extraFile $out/lib/$pname/lua-light-wings.lua
 
-      # Create the lua binary wrapper with proper environment
-      cat > $out/bin/nx-rebuild <<EOF
+      makeWrapper ${luaEnv}/bin/luarocks $out/bin/luarocks
+      makeWrapper ${luaEnv}/bin/lua $out/bin/$pname \
+        --add-flags "$out/lib/$pname/main.lua" \
+        --set LUA_PATH "$out/lib/$pname/?.lua;$out/lib/$pname/?/init.lua" \
+        --set LUA_CPATH "${luaEnv}/lib/lua/${luaEnv.lua.luaversion}/?.so"
+
+      # Additional custom wrapper
+      cat > $out/bin/$pname-extra <<EOF
       #!${pkgs.stdenv.shell}
-      export LUA_PATH="\
-      ${pkgs.lua54Packages.inspect}/share/lua/5.4/?.lua;\
-      ${pkgs.lua54Packages.inspect}/share/lua/5.4/?/init.lua;\
-      ${pkgs.lua54Packages.luafilesystem}/share/lua/5.4/?.lua;\
-      ${pkgs.lua54Packages.luafilesystem}/share/lua/5.4/?/init.lua;\
-      $out/?.lua;$out/?/init.lua"
-
-      export LUA_CPATH="\
-      ${pkgs.lua54Packages.inspect}/lib/lua/5.4/?.so;\
-      ${pkgs.lua54Packages.luafilesystem}/lib/lua/5.4/?.so;\
-      $out/?.so"
-
-      exec ${pkgs.lua5_4}/bin/lua "$out/app.lua"
+      exec ${luaEnv}/bin/lua "$out/lib/$pname/main.lua"
       EOF
+      chmod +x $out/bin/$pname-extra
 
-      chmod +x $out/bin/nx-rebuild
     '';
+
+    meta = with pkgs.lib; {
+      description = "NixOS extended rebuilder";
+      license = licenses.mit;
+      platforms = platforms.all;
+    };
   };
 in
-shell
+package
