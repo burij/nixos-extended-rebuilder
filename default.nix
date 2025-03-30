@@ -19,7 +19,7 @@ let
     buildInputs = [ luaEnv dependencies ];
     shellHook = ''
       alias run='lua main.lua'
-      alias nx='lua main.lua'
+      alias os='lua main.lua'
 
       cp ${pkgs.fetchurl {
         url = "https://raw.githubusercontent.com/burij/"
@@ -38,7 +38,7 @@ let
   };
 
   package = pkgs.stdenv.mkDerivation {
-    pname = "nx";
+    pname = "os";
     version = "1.0.0";
 
     src = ./.;
