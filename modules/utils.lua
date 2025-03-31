@@ -2,11 +2,13 @@ local M = {}
 --------------------------------------------------------------------------------
 
 function M.reload_module(x)
-    -- reloads modules during runtime
+-- reloads modules during runtime
     M.types(x, "string")   -- module name
     package.loaded[x] = nil
     return require(x)
 end
+
+--------------------------------------------------------------------------------
 
 function M.get_configuration(x)
     is_path(x)
@@ -15,6 +17,7 @@ function M.get_configuration(x)
     return is_dictionary(output)
 end
 
+--------------------------------------------------------------------------------
 
 function M.value_in_table(x, y)
 -- returns true, if value x is present in table y
@@ -29,8 +32,10 @@ function M.value_in_table(x, y)
     return is_boolean(output)
 end
 
+--------------------------------------------------------------------------------
+
 function M.compose_list(...)
-    -- glues strings and tables to a new table
+-- glues strings and tables to a new table
     local tbl = {}
     for _, v in ipairs({ ... }) do
         if type(v) == "string" then
@@ -49,6 +54,8 @@ function M.compose_list(...)
     return is_table(tbl)
 end
 
+--------------------------------------------------------------------------------
+
 function M.command_and_capture(x, y)
     is_string(x) -- command, which will be executed
     is_string(y) -- value, which be returned, if there is no output
@@ -65,9 +72,10 @@ function M.command_and_capture(x, y)
     return str
 end
 
+--------------------------------------------------------------------------------
 
 function M.tbl_div(x, y)
-    -- Creates a div table between 2 lists
+-- Creates a div table between 2 lists
     is_table(x)   -- original table
     is_table(y)  -- new table
     local tbl = { added = {}, removed = {} }
@@ -117,7 +125,6 @@ function M.tbl_div(x, y)
     end
     return is_table(tbl)
 end
-
 
 --------------------------------------------------------------------------------
 return M
