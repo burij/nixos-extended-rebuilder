@@ -15,8 +15,10 @@ local function application()
 
     if utils.value_in_table("rebuild", arg) or
         utils.value_in_table("upgrade", arg) then
-        rebuild.system(conf.entry_path)
+        rebuild.system(conf.entry_path, conf.channels)
     end
+
+    -- TODO add message for usage without the right arguments
 
 end
 

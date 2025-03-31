@@ -1,20 +1,24 @@
 local M = {}
 
-function M.system(x)
+function M.system(x, y)
 -- runs complete system upgrade
     local path = is_path(x) or "/etc/nixos/configuration.nix"
+    local target_channels = is_list(y)
     local utils = need "utils"
+    local channels = need "channels"
     print "nixos extended rebuilder is cooking your config..."
-    -- TODO channels sync
+    channels.sync(target_channels)
     local flag = " "
+    local data = {}
+    data.flag = " "
     if utils.value_in_table("upgrade", arg) then
-        local flag = "--upgrade"
+        data.flag = "--upgrade"
         print "NixOS full upgrade..."
         else
         print "NixOS rebuild without upgrade..."
     end
     os.execute(
-        "sudo nixos-rebuild switch " .. flag .. " -I nixos-config=" .. path
+        "sudo nixos-rebuild switch " .. data.flag .. " -I nixos-config=" .. path
     )
     print "taking care of flatpaks..."
     --TODO add flatpak declarativ flatpak rebuilder
