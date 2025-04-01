@@ -3,7 +3,6 @@ local M = {}
 function M.sync(x)
     local target_channels = is_table(x)
     local utils = need "utils"
-    local result = {}
     local get_channels = utils.command_and_capture(
         "sudo nix-channel --list",
         ""
