@@ -56,20 +56,21 @@ end
 
 --------------------------------------------------------------------------------
 
-function M.command_and_capture(x, y)
-    is_string(x) -- command, which will be executed
-    is_string(y) -- value, which be returned, if there is no output
-    local handle = io.popen(x)
-    local str = ""
+function M.run_and_store(cmd, default)
+-- function, which runs a terminal command and returns the output as variable
+    is_string(cmd)
+    is_string(default)
+    local handle = io.popen(cmd)
+    local result = ""
     if handle then
-        str = handle:read("*a")
+        result = handle:read("*a")
         handle:close()
     end
-    if str == "" then
-        str = y
+    if result == "" then
+        result = default
     end
-    str = string.gsub(str, "\n$", "")
-    return str
+    output = string.gsub(result, "\n$", "")
+    return is_string(output)
 end
 
 --------------------------------------------------------------------------------
