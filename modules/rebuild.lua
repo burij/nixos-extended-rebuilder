@@ -21,6 +21,7 @@ function M.system(x, y)
         "sudo nixos-rebuild switch " .. data.flag .. " -I nixos-config=" .. path
     )
     print "taking care of flatpaks..."
+    --TODO some system to check, if flathub is avaible and add if not
     --TODO add flatpak declarativ flatpak rebuilder
     if utils.value_in_table("upgrade", arg) then
         os.execute("flatpak update -y")

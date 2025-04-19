@@ -1,4 +1,5 @@
 M = {}
+--------------------------------------------------------------------------------
 
 function M.install(x, postroutine)
     -- creates a script to install flatpaks you wish for
@@ -33,5 +34,5 @@ function M.install(x, postroutine)
     return is_table(result)
 end
 
-
+--------------------------------------------------------------------------------
 return M

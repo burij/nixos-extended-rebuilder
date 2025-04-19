@@ -19,6 +19,10 @@ local function application()
         rebuild.system(conf.entry_path, conf.channels)
     end
 
+    if utils.value_in_table("tui", arg) then
+        os.execute("cd legacy && lua main.lua")
+    end
+
     -- TODO add message for usage without the right arguments
 
 end

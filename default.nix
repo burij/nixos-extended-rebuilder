@@ -54,7 +54,7 @@ let
     extraFile = pkgs.fetchurl {
       url = "https://github.com/burij/lua-light-wings/blob/"
         + "v.0.2.2/modules/lua-light-wings.lua";
-      sha256 = "sha256-vJHfVI9RhXjiTOgCpjJAXa4h44ADVHUBBhBSdFmILl0=";
+      sha256 = "sha256-41CU9SLx8jUnviEoRbk6VXrXqdf/+UFngfb+NWoy2Yk=";
     };
 
     nativeBuildInputs = [ pkgs.makeWrapper ];
@@ -75,7 +75,7 @@ let
       # Additional custom wrapper
       cat > $out/bin/$pname-extra <<EOF
       #!${pkgs.stdenv.shell}
-      exec ${luaEnv}/bin/lua "$out/lib/$pname/main.lua"
+      exec ${luaEnv}/bin/lua "$out/lib/$pname/main.lua" "\$@"
       EOF
       chmod +x $out/bin/$pname-extra
 
@@ -88,4 +88,4 @@ let
     };
   };
 in
-shell
+package
