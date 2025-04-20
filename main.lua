@@ -20,7 +20,8 @@ local function application()
     end
 
     if utils.value_in_table("tui", arg) then
-        os.execute("cd legacy && lua main.lua")
+        local tui = need "tui"
+        tui()
     end
 
     -- TODO add message for usage without the right arguments

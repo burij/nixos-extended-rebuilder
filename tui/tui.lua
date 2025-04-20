@@ -1,4 +1,4 @@
-local conf, f = require("conf"), require("lib")
+local conf, f = require("legacyconf"), require("lib")
 
 conf.symlink_system = "ln -sfv " .. conf.root_path .. " /etc/nixos"
 conf.back_up_path = "/etc/nixos/configuration." .. os.time()

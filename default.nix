@@ -54,7 +54,7 @@ let
     extraFile = pkgs.fetchurl {
       url = "https://github.com/burij/lua-light-wings/blob/"
         + "v.0.2.2/modules/lua-light-wings.lua";
-      sha256 = "sha256-41CU9SLx8jUnviEoRbk6VXrXqdf/+UFngfb+NWoy2Yk=";
+      sha256 = "sha256-Ll8g2s2N/dvvyx1+NO0GmMGo3a/dmeEF+J+Q+zFFttw=";
     };
 
     nativeBuildInputs = [ pkgs.makeWrapper ];
@@ -69,7 +69,9 @@ let
       makeWrapper ${luaEnv}/bin/luarocks $out/bin/luarocks
       makeWrapper ${luaEnv}/bin/lua $out/bin/$pname \
         --add-flags "$out/lib/$pname/main.lua" \
-        --set LUA_PATH "$out/lib/$pname/?.lua;$out/lib/$pname/?/init.lua" \
+        --set LUA_PATH "$out/lib/$pname/?.lua;$out/lib/$pname/?/init.lua;;" \
+        --set LUA_PATH "$out/lib/$pname/modules/?.lua;;" \
+        --set LUA_PATH "$out/lib/$pname/tui/?.lua;;" \
         --set LUA_CPATH "${luaEnv}/lib/lua/${luaEnv.lua.luaversion}/?.so"
 
       # Additional custom wrapper
@@ -88,4 +90,4 @@ let
     };
   };
 in
-package
+shell
