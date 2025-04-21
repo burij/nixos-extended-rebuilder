@@ -20,7 +20,8 @@ local function application()
     end
 
     if utils.value_in_table("tui", arg) then
-        local tui = need "tui"
+        package.path = "./tui/?.lua;" .. package.path
+        local tui = require "tui"
         tui()
     end
 
