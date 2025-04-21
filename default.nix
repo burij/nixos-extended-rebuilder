@@ -64,6 +64,7 @@ let
       mkdir -p $out/bin
       mkdir -p $out/lib
       cp -r . $out/lib/$pname
+      cp -r ./modules/* $out/lib/$pname/
       cp $extraFile $out/lib/$pname/lua-light-wings.lua
 
       makeWrapper ${luaEnv}/bin/luarocks $out/bin/luarocks
@@ -88,4 +89,4 @@ let
     };
   };
 in
-package
+shell
