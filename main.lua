@@ -1,3 +1,4 @@
+-- TODO dofile as relative path does not work if packaged for nix
 _G.need = require "need"
 local core = need "lua-light-wings" core.globalize(core)
 local utils = need "utils"
