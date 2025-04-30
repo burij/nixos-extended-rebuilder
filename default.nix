@@ -18,6 +18,7 @@ let
   shell = pkgs.mkShell {
     buildInputs = [ luaEnv dependencies ];
     shellHook = ''
+      export LUAOS="$HOME/Desktop/2508_Nixos-Extended-Rebuilder/conf.lua"
       alias run='lua main.lua'
       alias os='lua main.lua'
 

@@ -4,8 +4,8 @@ function M.system(x, y)
 -- runs complete system upgrade
     local path = is_path(x) or "/etc/nixos/configuration.nix"
     local target_channels = is_list(y)
-    local utils = need "utils"
-    local channels = need "channels"
+    local utils = need "modules.utils"
+    local channels = need "modules.channels"
     print "nixos extended rebuilder is cooking your config..."
     channels.sync(target_channels)
     local flag = " "

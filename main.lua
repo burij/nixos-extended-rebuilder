@@ -1,18 +1,19 @@
--- TODO dofile as relative path does not work if packaged for nix
 _G.need = require "need"
 local core = need "modules.lua-light-wings" core.globalize(core)
 local utils = need "modules.utils"
 --keep dofile, later logic with absolute path as output
-local conf = utils.get_configuration("conf.lua")
--- TODO add a system to get conf.lua path from envirement variable
+
+local conf_path = os.getenv("LUAOS")
+msg(conf_path)
+local conf = utils.get_configuration(conf_path)
 local rebuild = need "modules.rebuild"
 local tests = require "tests"
-if conf.debug_mode then tests.prestart() end
 local M = {}
 --------------------------------------------------------------------------------
 
 local function application()
     if conf.debug_mode then
+        tests.prestart()
         msg("content of the loaded configuration:")
         msg(conf)
     end
@@ -23,6 +24,7 @@ local function application()
     end
 
     if utils.value_in_table("tui", arg) then
+        -- not working at the moment, but no plans for fixing now
         package.path = "./tui/?.lua;" .. package.path
         local tui = require "tui"
         tui()
