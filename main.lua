@@ -21,17 +21,15 @@ local function application()
     if utils.value_in_table("rebuild", arg) or
         utils.value_in_table("upgrade", arg) then
         rebuild.system(conf.entry_path, conf.channels)
+        elseif utils.value_in_table("tui", arg) then
+            -- not working at the moment, but no plans for fixing now
+            package.path = "./tui/?.lua;" .. package.path
+            local tui = require "tui"
+            tui()
+        elseif utils.value_in_table("help", arg) then
+            print "TODO create a module, which prints output of README.md"
+        else print "argument missing. please run 'os help' to learn more."
     end
-
-    if utils.value_in_table("tui", arg) then
-        -- not working at the moment, but no plans for fixing now
-        package.path = "./tui/?.lua;" .. package.path
-        local tui = require "tui"
-        tui()
-    end
-
-    -- TODO add message for usage without the right arguments
-
 end
 
 --------------------------------------------------------------------------------
