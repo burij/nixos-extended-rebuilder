@@ -2,9 +2,10 @@
 _G.need = require "need"
 local core = need "modules.lua-light-wings" core.globalize(core)
 local utils = need "modules.utils"
+--keep dofile, later logic with absolute path as output
 local conf = utils.get_configuration("conf.lua")
 -- TODO add a system to get conf.lua path from envirement variable
-local rebuild = need "rebuild"
+local rebuild = need "modules.rebuild"
 if conf.debug_mode then dofile("tests.lua") end
 local M = {}
 --------------------------------------------------------------------------------
