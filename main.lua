@@ -6,7 +6,8 @@ local utils = need "modules.utils"
 local conf = utils.get_configuration("conf.lua")
 -- TODO add a system to get conf.lua path from envirement variable
 local rebuild = need "modules.rebuild"
-if conf.debug_mode then dofile("tests.lua") end
+local tests = require "tests"
+if conf.debug_mode then tests.prestart() end
 local M = {}
 --------------------------------------------------------------------------------
 
