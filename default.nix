@@ -20,6 +20,7 @@ let
     shellHook = ''
       export LUAOS="./conf.lua"
       alias run='lua main.lua'
+      alias runr='./result/bin/os'
       alias os='lua main.lua'
       alias make='rm result;git add .;build;git commit -m '
 
