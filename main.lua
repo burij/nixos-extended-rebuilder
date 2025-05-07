@@ -1,18 +1,19 @@
-_G.need = require "need"
-local core = need "modules.lua-light-wings" core.globalize(core)
-local utils = need "modules.utils"
---keep dofile, later logic with absolute path as output
-local conf_path = os.getenv("LUAOS")
--- TODO set default conf_path, if it does not exists
--- TODO initiating a default conf.lua, if it is not in the path
-msg(conf_path)
-local conf = utils.get_configuration(conf_path)
-local rebuild = need "modules.rebuild"
+local M = {} _G.need = require "need"
+
+local core = require "modules.lua-light-wings" core.globalize(core)
+local utils = require "modules.utils"
+local rebuild = require "modules.rebuild"
 local tests = require "tests"
-local M = {}
+
 --------------------------------------------------------------------------------
 
 local function application()
+    local conf_path = os.getenv("LUAOS")
+    -- TODO set default conf_path, if it does not exists
+    -- TODO initiating a default conf.lua, if it is not in the path
+    msg(conf_path)
+    local conf = utils.get_configuration(conf_path)
+
     if conf.debug_mode then
         tests.prestart()
         msg("content of the loaded configuration:")
@@ -31,6 +32,7 @@ local function application()
             print "TODO create a module, which prints output of README.md"
         else print "argument missing. please run 'os help' to learn more."
     end
+
 end
 
 --------------------------------------------------------------------------------
