@@ -2,8 +2,9 @@ _G.need = require "need"
 local core = need "modules.lua-light-wings" core.globalize(core)
 local utils = need "modules.utils"
 --keep dofile, later logic with absolute path as output
-
 local conf_path = os.getenv("LUAOS")
+-- TODO set default conf_path, if it does not exists
+-- TODO initiating a default conf.lua, if it is not in the path
 msg(conf_path)
 local conf = utils.get_configuration(conf_path)
 local rebuild = need "modules.rebuild"

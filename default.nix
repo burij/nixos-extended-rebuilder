@@ -18,9 +18,10 @@ let
   shell = pkgs.mkShell {
     buildInputs = [ luaEnv dependencies ];
     shellHook = ''
-      export LUAOS="$HOME/Desktop/2508_Nixos-Extended-Rebuilder/conf.lua"
+      export LUAOS="./conf.lua"
       alias run='lua main.lua'
       alias os='lua main.lua'
+      alias make='rm result;git add .;build;git commit -m '
 
       cp ${pkgs.fetchurl {
         url = "https://raw.githubusercontent.com/burij/"
@@ -30,7 +31,7 @@ let
 
       cp ${pkgs.fetchurl {
         url = "https://raw.githubusercontent.com/burij/"
-          +"lua-light-wings/refs/heads/main/modules/lua-light-wings.lua";
+          +"lua-light-wings/refs/heads/v.0.2.2/modules/lua-light-wings.lua";
         sha256 = "sha256-mRD1V0ERFi4gmE/VfAnd1ujoyoxlA0vCj9fJNSCtPkw=";
       }} ./modules/lua-light-wings.lua
 
@@ -55,7 +56,7 @@ let
     extraFile = pkgs.fetchurl {
       url = "https://github.com/burij/lua-light-wings/blob/"
         + "v.0.2.2/modules/lua-light-wings.lua";
-      sha256 = "sha256-02aiqL2O7shiDWQPy7v8sgGSCCuvxDxGzrpdaB/yHQA=";
+      sha256 = "sha256-8t0WCZ3JG0gIoJQwhjfeB0bn16snHL+RYx4MAnsXH2c=";
     };
 
     nativeBuildInputs = [ pkgs.makeWrapper ];
@@ -90,4 +91,4 @@ let
     };
   };
 in
-shell
+{ shell = shell; package = package; }
