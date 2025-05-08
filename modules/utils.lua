@@ -128,4 +128,17 @@ function M.tbl_div(x, y)
 end
 
 --------------------------------------------------------------------------------
+
+function M.new_config(path, default_path)
+-- creating new config if it does not exist
+    is_string(path)
+    is_string(default_path)
+    local file = io.open(path, "r")
+    if file then
+        io.close(file)
+    else msg "TODO process to create a new config file in utils.new_config"
+    end
+end
+
+--------------------------------------------------------------------------------
 return M

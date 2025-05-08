@@ -10,8 +10,8 @@ local tests = require "modules.tests"
 local function application()
     local default_conf_path = os.getenv("HOME") .. "/.nixconf.lua"
     local conf_path = os.getenv("LUAOS") or default_conf_path
-    -- TODO initiating a default conf.lua, if it is not in the path
-    msg(conf_path)
+
+    utils.new_config(conf_path, default_conf_path)
     local conf = utils.get_configuration(conf_path)
 
     if conf.debug_mode then
