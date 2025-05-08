@@ -21,4 +21,10 @@ msg([[
 ]])
 end
 
+M.show_config = function (x)
+    is_table(x)
+    msg("content of the loaded configuration:")
+    msg(x)
+end
+
 return M
