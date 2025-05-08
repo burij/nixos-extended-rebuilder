@@ -18,15 +18,14 @@ local function application()
         tests.show_config(conf)
     end
 
-    if utils.value_in_table("rebuild", arg) or
-        utils.value_in_table("upgrade", arg) then
+    if utils.val_in_tbl("rebuild", arg) or utils.val_in_tbl("upgrade", arg) then
         rebuild.system(conf)
-        elseif utils.value_in_table("tui", arg) then
+        elseif utils.val_in_tbl("tui", arg) then
             -- not working at the moment, but no plans for fixing now
             package.path = "./tui/?.lua;" .. package.path
             local tui = require "tui"
             tui()
-        elseif utils.value_in_table("help", arg) then
+        elseif utils.val_in_tbl("help", arg) then
             print "TODO create a module, which prints output of README.md"
         else print "argument missing. please run 'os help' to learn more."
     end

@@ -19,7 +19,7 @@ end
 
 --------------------------------------------------------------------------------
 
-function M.value_in_table(x, y)
+function M.val_in_tbl(x, y)
 -- returns true, if value x is present in table y
     is_string(x)
     is_dictionary(y)
