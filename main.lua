@@ -3,7 +3,7 @@ local M = {} _G.need = require "need"
 local core = require "modules.lua-light-wings" core.globalize(core)
 local utils = require "modules.utils"
 local rebuild = require "modules.rebuild"
-local tests = require "tests"
+local tests = require "modules.tests"
 
 --------------------------------------------------------------------------------
 

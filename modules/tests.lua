@@ -1,6 +1,4 @@
 local M = {}
--- TODO try to make this file a module
-
 
 M.prestart = function ()
 print(
