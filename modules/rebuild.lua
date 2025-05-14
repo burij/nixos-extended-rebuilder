@@ -8,6 +8,7 @@ function M.system(x)
     local target_channels = is_list(x.channels)
     local channels = require "modules.channels"
     local utils = require "modules.utils"
+    local flatpak = require "modules.flatpak"
 
     print "nixos extended rebuilder is cooking your config..."
     channels.sync(target_channels)
@@ -15,8 +16,9 @@ function M.system(x)
     M.nixos_rebuild(path)
 
     print "taking care of flatpaks..."
-    --TODO some system to check, if flathub is avaible and add if not
-    --TODO add flatpak declarativ flatpak rebuilder
+    flatpak.support()
+    -- flatpak.install(conf.flatpaks, {}) --TODO test function
+
     if utils.val_in_tbl("upgrade", arg) then
         os.execute("flatpak update -y")
     end

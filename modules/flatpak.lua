@@ -35,4 +35,27 @@ function M.install(x, postroutine)
 end
 
 --------------------------------------------------------------------------------
+
+
+function M.support()
+    --adds flatpak support
+    local utils = require "modules.utils"
+    local flatpak_version = utils.run_and_store(
+        "flatpak --version",
+        "not found"
+    )
+    if string.find(flatpak_version, "not found") then
+        print "Flatpak was not found on this system. Add"
+        print "services.flatpak.enable = true;"
+        print "to your configuration.nix"
+    else
+        os.execute("flatpak remote-add --if-not-exists "
+            .. "flathub https://flathub.org/repo/flathub.flatpakrepo"
+        )
+    end
+    print(flatpak_version)
+end
+
+
+--------------------------------------------------------------------------------
 return M
