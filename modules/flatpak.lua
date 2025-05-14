@@ -1,11 +1,10 @@
 M = {}
 --------------------------------------------------------------------------------
 
-function M.install(x, postroutine)
+function M.install(x)
     -- creates a script to install flatpaks you wish for
     utils = need "utils"
     is_table(x)    -- target list of flatpaks
-    is_string(postroutine)
     local get_flatpaks_cmd = "flatpak list --app --columns=application"
     local flatpak_output = utils.run_and_store(get_flatpaks_cmd, "")
     local function str_to_table(x)
@@ -18,7 +17,7 @@ function M.install(x, postroutine)
     end
     local existing_flatpaks = str_to_table(flatpak_output)
     local flatpak_div = utils.tbl_div(existing_flatpaks, x)
-    local process_installs = f.map(flatpak_div.added, function(x)
+    local process_installs = map(flatpak_div.added, function(x)
         is_string(x)
         str = string.format("flatpak install --system flathub %s -y", x)
         return str
@@ -28,10 +27,9 @@ function M.install(x, postroutine)
         str = string.format("flatpak uninstall %s -y", x)
         return str
     end)
-    local result = utils.compose_list(
-        process_installs, process_removes, postroutine
-    )
-    return is_table(result)
+    local result = utils.compose_list(process_installs, process_removes)
+    map(result, os.execute)
+    -- return is_table(result)
 end
 
 --------------------------------------------------------------------------------
@@ -42,18 +40,16 @@ function M.support()
     local utils = require "modules.utils"
     local flatpak_version = utils.run_and_store(
         "flatpak --version",
-        "not found"
+        "Flatpak was not found on this system."
     )
+    print(flatpak_version)
     if string.find(flatpak_version, "not found") then
-        print "Flatpak was not found on this system. Add"
-        print "services.flatpak.enable = true;"
-        print "to your configuration.nix"
+        print "Add 'services.flatpak.enable = true;' to your configuration.nix"
     else
         os.execute("flatpak remote-add --if-not-exists "
             .. "flathub https://flathub.org/repo/flathub.flatpakrepo"
         )
     end
-    print(flatpak_version)
 end
 
 

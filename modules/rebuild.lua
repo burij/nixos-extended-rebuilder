@@ -3,9 +3,10 @@ local M = {}
 --------------------------------------------------------------------------------
 
 function M.system(x)
-    -- runs complete system upgrade
+    -- runs complete system rebuild/upgrade
     local path = is_path(x.entry_path) or "/etc/nixos/configuration.nix"
     local target_channels = is_list(x.channels)
+    local flatpak_list = is_list(x.flatpaks)
     local channels = require "modules.channels"
     local utils = require "modules.utils"
     local flatpak = require "modules.flatpak"
@@ -17,13 +18,14 @@ function M.system(x)
 
     print "taking care of flatpaks..."
     flatpak.support()
-    -- flatpak.install(conf.flatpaks, {}) --TODO test function
+    flatpak.install(flatpak_list)
 
     if utils.val_in_tbl("upgrade", arg) then
         os.execute("flatpak update -y")
     end
 
     --TODO add dotfiles sync
+    --TODO create a postroutine execution
 
     os.execute("nixos-rebuild list-generations | grep current")
 end
