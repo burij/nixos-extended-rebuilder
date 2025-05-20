@@ -24,7 +24,8 @@ function M.system(x)
         os.execute("flatpak update -y")
     end
 
-    --TODO add dotfiles sync
+    M.dotfiles_sync()
+
     --TODO create a postroutine execution
 
     os.execute("nixos-rebuild list-generations | grep current")
@@ -50,6 +51,12 @@ function M.nixos_rebuild(x)
         .. path
     )
 end
+
+--------------------------------------------------------------------------------
+function M.dotfiles_sync()
+    --TODO interface for communication with dotfiles moduler
+end
+
 
 --------------------------------------------------------------------------------
 

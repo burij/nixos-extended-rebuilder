@@ -1,4 +1,5 @@
 local conf = {}
+local conf.dot = {}
 --------------------------------------------------------------------------------
 conf.debug_mode = true
 
@@ -26,6 +27,16 @@ conf.flatpaks = {
     "com.github.maoschanz.drawing",
     "app.drey.EarTag",
 }
+
+conf.dot.path = "/home/burij/Desktop/2508_Nixos-Extended-Rebuilder/temp"
+
+conf.dot.files = {
+    bash = {"$HOME/.bash_history" },
+    blender = { "$HOME/.config/blender/4.2/config/userpref.blend" },
+    brave = {
+        "$HOME/.config/BraveSoftware/Brave-Browser/Default/Preferences",
+        "$HOME/.config/BraveSoftware/Brave-Browser/Local State"
+    }
 
 --------------------------------------------------------------------------------
 return conf
