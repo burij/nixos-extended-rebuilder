@@ -10,6 +10,7 @@ function M.system(x)
     local channels = require "modules.channels"
     local utils = require "modules.utils"
     local flatpak = require "modules.flatpak"
+    local dot_confs = is_table(x.dot)
 
     print "nixos extended rebuilder is cooking your config..."
     channels.sync(target_channels)
@@ -24,7 +25,7 @@ function M.system(x)
         os.execute("flatpak update -y")
     end
 
-    M.dotfiles_sync()
+    M.dotfiles_sync(dot_confs)
 
     --TODO create a postroutine execution
 
@@ -53,8 +54,11 @@ function M.nixos_rebuild(x)
 end
 
 --------------------------------------------------------------------------------
-function M.dotfiles_sync()
-    --TODO interface for communication with dotfiles moduler
+function M.dotfiles_sync(x)
+    --TODO interface for communication with dotfiles module
+    local df = require "modules.dotfiles"
+    local path = is_string(x.path)
+    msg(path)
 end
 
 
