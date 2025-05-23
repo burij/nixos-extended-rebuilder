@@ -141,4 +141,13 @@ function M.new_config(path, default_path)
 end
 
 --------------------------------------------------------------------------------
+
+function M.dir_exists(x)
+    local path = is_string(x)
+    local lfs = require "lfs"
+    local attr = lfs.attributes(path)
+    return attr and attr.mode == "directory"
+end
+
+--------------------------------------------------------------------------------
 return M

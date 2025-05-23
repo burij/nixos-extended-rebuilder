@@ -56,9 +56,19 @@ end
 --------------------------------------------------------------------------------
 function M.dotfiles_sync(x)
     --TODO interface for communication with dotfiles module
-    local df = require "modules.dotfiles"
+    local dot = require "modules.dotfiles"
+    local utils = require "modules.utils"
+    local lfs = require "lfs"
     local path = is_string(x.path)
-    msg(path)
+
+    if utils.dir_exists(path) then
+        print("Dotfiles repository is located in " .. path)
+    else
+        lfs.mkdir(path)
+        print("New dotfiles repository created in " .. path)
+    end
+
+
 end
 
 
