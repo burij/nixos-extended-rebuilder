@@ -27,7 +27,7 @@ function M.files_sync(path, files)
     local index = is_dictionary(files)
     local lfs = require "lfs"
 
-    local index = M.extract_fileindex(path, files)
+    local index = M.extract_fileindex(root, index)
 
     -- TODO check if source and target do exist
     -- TODO if source doesn't exist but target, copy target to repo and symlink
