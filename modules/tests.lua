@@ -1,13 +1,13 @@
-local M = {}
+local M = {} _G.need = require "need"
+--------------------------------------------------------------------------------
 
 M.prestart = function ()
-print "debug mode is on"
-M.dotted_line()
-local M = {} _G.need = require "need"
-local core = require "modules.lua-light-wings" core.globalize(core)
-msg "light wings loaded..."
-msg "prestart finished..."
-M.dotted_line()
+    print "debug mode is on"
+    M.dotted_line()
+    local core = require "modules.lua-light-wings" core.globalize(core)
+    msg "light wings loaded..."
+    msg "prestart finished..."
+    M.dotted_line()
 end
 
 --------------------------------------------------------------------------------
