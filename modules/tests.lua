@@ -1,22 +1,13 @@
 local M = {}
 
 M.prestart = function ()
-print(
-[[
-debug mode is on.
-................................................................................
-]])
-
-
-M.repeat_string()
-
+print "debug mode is on"
+M.dotted_line()
 local M = {} _G.need = require "need"
 local core = require "modules.lua-light-wings" core.globalize(core)
 msg "light wings loaded..."
 msg "prestart finished..."
-msg([[
-................................................................................
-]])
+M.dotted_line()
 end
 
 --------------------------------------------------------------------------------
@@ -29,7 +20,7 @@ end
 
 --------------------------------------------------------------------------------
 
-function M.repeat_string()
+function M.dotted_line()
     local x = ""
     local y = "."
     for i = 1, 80 do
