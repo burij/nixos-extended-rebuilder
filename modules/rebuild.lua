@@ -69,19 +69,7 @@ function M.dotfiles_sync(x)
         print("New dotfiles repository created in " .. path)
     end
 
-    function M.files_sync(path, files)
-        -- TODO routine for syncing of normal dotfiles
-        local root = is_path(path)
-        local index = is_dictionary(files)
-        local lfs = require "lfs"
-        -- TODO normalize table to 1:1 table
-        -- TODO check if source and target do exist
-        -- TODO if source doesn't exist but target, copy target to repo and symlink
-        -- TODO if source exist, but not target, symlink
-        -- TODO if both do not exist, do nothing
-        -- TODO if both exist, check, if target is already symlink (what then?)
-        -- TODO loop trough table
-    end
+    dot.files_sync(path, files)
 
 end
 
