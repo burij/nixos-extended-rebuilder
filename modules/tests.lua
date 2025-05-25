@@ -6,25 +6,38 @@ print(
 debug mode is on.
 ................................................................................
 ]])
-local core = need "lua-light-wings"
-core.msg("lua-light-wings succefully loaded localy")
-msg("llw-core succefully loaded globaly")
-msg("lua documention: https://lua-docs.vercel.app")
-local inspect = need "inspect"
-print(
-    inspect({
-        "inspect succefully loaded via nix-pkgs"
-    }))
-msg("prestart finished...")
+
+
+M.repeat_string()
+
+local M = {} _G.need = require "need"
+local core = require "modules.lua-light-wings" core.globalize(core)
+msg "light wings loaded..."
+msg "prestart finished..."
 msg([[
 ................................................................................
 ]])
 end
+
+--------------------------------------------------------------------------------
 
 M.show_config = function (x)
     is_table(x)
     msg("content of the loaded configuration:")
     msg(x)
 end
+
+--------------------------------------------------------------------------------
+
+function M.repeat_string()
+    local x = ""
+    local y = "."
+    for i = 1, 80 do
+        x = x .. y
+    end
+    print(x)
+end
+
+--------------------------------------------------------------------------------
 
 return M
