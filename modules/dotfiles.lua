@@ -1,8 +1,97 @@
 local M = {}
+
+--------------------------------------------------------------------------------
+function M.sync(x)
+    -- interface for communication with dotfiles module
+    local conf = is_dictionary(x)
+
+    print "syncing user configuration..."
+
+    -- TODO sync single configuration files
+    M.ensure_repository(conf.path)
+    M.create_parents(conf)
+    -- M.backup_targets()
+    -- M.create_symlinks()
+
+    -- TODO sync configuration folders
+    -- TODO backup gnome-shell settings
+    -- TODO import gnome-shell settings
+
+end
+--------------------------------------------------------------------------------
+
+function M.ensure_repository(x)
+    local path = is_string(x)
+    local utils = require "modules.utils"
+    local lfs = require "lfs"
+
+    if utils.dir_exists(path) then
+        print("dotfiles repository is located in " .. path)
+    else
+        lfs.mkdir(path)
+        print("new dotfiles repository created in " .. path)
+    end
+end
+
+--------------------------------------------------------------------------------
+function M.create_parents(x)
+    local lfs = require "lfs"
+    local utils = require "modules.utils"
+    local path = "/home/burij/Desktop/2508_Nixos-Extended-Rebuilder/temp"
+    local index = {
+        single = {"$HOME/Downloads/single.md" },
+        ["key with spaces"] = { "$HOME/Downloads/with space/single.md" },
+        multiple = {
+            "$HOME/Downloads/set/first file.md",
+            "$HOME/Downloads/set/second file.md",
+            "$HOME/Downloads/set/deeper/deep file.md",
+            "$HOME/Downloads/set/test/file/without/extension",
+        },
+    }
+
+    local parent_list = {}
+
+    local seen = {}  -- To avoid duplicates
+    for k, _ in pairs(index) do
+        local target_dir = path .. "/" .. k
+        if not seen[target_dir] then
+            table.insert(parent_list, target_dir)
+            seen[target_dir] = true
+        end
+    end
+
+    for _, files in pairs(index) do
+        for _, file_path in ipairs(files) do
+            local parent_dir_decoded = file_path:match("^(.+)/[^/]+$")
+            local parent_dir = M.encode_home(parent_dir_decoded)
+            msg(parent_dir)
+            if parent_dir and not seen[parent_dir] then
+                table.insert(parent_list, parent_dir)
+                seen[parent_dir] = true
+            end
+        end
+    end
+
+    msg(parent_list)
+    local missing_parents = filter(parent_list, utils.dir_exists) -- TODO fix it
+    if debug_mode then print "folders to create: " msg(missing_parents) end
+    -- TODO implement actual creation of the folders
+
+end
+--------------------------------------------------------------------------------
+
+function M.encode_home(path)
+    local home = os.getenv("HOME")
+    if home then
+        return path:gsub("^%$HOME", home)
+    end
+    return path
+end
+
 --------------------------------------------------------------------------------
 
 function M.extract_fileindex(path, files)
-    -- normalize table to 1:1 table
+    -- normalize table to 1:1 table --> belongs to create symlinks
     local repo = is_path(path)
     local input = is_dictionary(files)
     local result = {}
@@ -22,19 +111,13 @@ end
 --------------------------------------------------------------------------------
 
 function M.files_sync(path, files)
-    -- TODO routine for syncing of normal dotfiles
+    --> belongs to create symlinks
     local root = is_path(path)
     local index = is_dictionary(files)
     local lfs = require "lfs"
 
     local index = M.extract_fileindex(root, index)
 
-    -- TODO check if source and target do exist
-    -- TODO if source doesn't exist but target, copy target to repo and symlink
-    -- TODO if source exist, but not target, symlink
-    -- TODO if both do not exist, do nothing
-    -- TODO if both exist, check, if target is already symlink (what then?)
-    -- TODO loop trough table
 end
 
 --------------------------------------------------------------------------------

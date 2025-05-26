@@ -16,6 +16,7 @@ M.show_config = function (x)
     is_table(x)
     msg("content of the loaded configuration:")
     msg(x)
+    M.dotted_line()
 end
 
 --------------------------------------------------------------------------------

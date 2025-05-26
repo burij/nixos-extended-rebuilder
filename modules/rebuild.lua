@@ -10,6 +10,7 @@ function M.system(x)
     local channels = require "modules.channels"
     local utils = require "modules.utils"
     local flatpak = require "modules.flatpak"
+    local dotfiles = require "modules.dotfiles"
     local dot_confs = is_table(x.dot)
 
     print "nixos extended rebuilder is cooking your config..."
@@ -25,7 +26,7 @@ function M.system(x)
         os.execute("flatpak update -y")
     end
 
-    M.dotfiles_sync(dot_confs)
+    dotfiles.sync(dot_confs)
 
     --TODO create a postroutine execution
 
@@ -51,26 +52,6 @@ function M.nixos_rebuild(x)
         .. " -I nixos-config="
         .. path
     )
-end
-
---------------------------------------------------------------------------------
-function M.dotfiles_sync(x)
-    -- interface for communication with dotfiles module
-    local dot = require "modules.dotfiles"
-    local utils = require "modules.utils"
-    local lfs = require "lfs"
-    local path = is_string(x.path)
-    local files = is_dictionary(x.files)
-
-    if utils.dir_exists(path) then
-        print("Dotfiles repository is located in " .. path)
-    else
-        lfs.mkdir(path)
-        print("New dotfiles repository created in " .. path)
-    end
-
-    dot.files_sync(path, files)
-
 end
 
 

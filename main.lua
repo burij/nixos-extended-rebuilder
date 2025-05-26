@@ -28,6 +28,9 @@ local function application()
         tui()
     elseif utils.val_in_tbl("help", arg) then
         print "TODO create a module, which prints output of README.md"
+    elseif utils.val_in_tbl("userconf", arg) then
+        local dotfiles = require "modules.dotfiles"
+        dotfiles.sync(conf.dot)
     else
         print "argument missing. please run 'os help' to learn more."
     end
