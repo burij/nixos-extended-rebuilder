@@ -49,6 +49,8 @@ function M.create_parents(x)
         },
     }
 
+
+
     local parent_list = {}
 
     local seen = {}  -- To avoid duplicates
@@ -64,7 +66,6 @@ function M.create_parents(x)
         for _, file_path in ipairs(files) do
             local parent_dir_decoded = file_path:match("^(.+)/[^/]+$")
             local parent_dir = M.encode_home(parent_dir_decoded)
-            msg(parent_dir)
             if parent_dir and not seen[parent_dir] then
                 table.insert(parent_list, parent_dir)
                 seen[parent_dir] = true
@@ -72,10 +73,9 @@ function M.create_parents(x)
         end
     end
 
-    msg(parent_list)
-    local missing_parents = filter(parent_list, utils.dir_exists) -- TODO fix it
+    local missing_parents = filter(parent_list, utils.dir_missing)
     if debug_mode then print "folders to create: " msg(missing_parents) end
-    -- TODO implement actual creation of the folders
+    map(missing_parents, lfs.mkdir) -- TODO lfs.mkdir doesn't create if parent doesn't exist
 
 end
 --------------------------------------------------------------------------------

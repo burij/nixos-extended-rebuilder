@@ -146,7 +146,25 @@ function M.dir_exists(x)
     local path = is_string(x)
     local lfs = require "lfs"
     local attr = lfs.attributes(path)
+
+    if debug_mode then print("check if exists: " .. path) end
+    if debug_mode then msg(attr and attr.mode == "directory") end
+
     return attr and attr.mode == "directory"
+end
+
+--------------------------------------------------------------------------------
+function M.dir_missing(x)
+    local path = is_string(x)
+    local lfs = require "lfs"
+    local attr = lfs.attributes(path)
+    local flag = false
+    if attr == nil then flag = true end
+
+    if debug_mode then print("check if missing: " .. path) end
+    if debug_mode then msg(flag) end
+
+    return is_boolean(flag)
 end
 
 --------------------------------------------------------------------------------
