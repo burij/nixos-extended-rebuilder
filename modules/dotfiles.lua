@@ -48,9 +48,7 @@ function M.create_parents(x)
             "$HOME/Downloads/set/test/file/without/extension",
         },
     }
-
     local parent_list = {}
-
     local seen = {}  -- To avoid duplicates
     for k, _ in pairs(index) do
         local target_dir = path .. "/" .. k
@@ -59,7 +57,6 @@ function M.create_parents(x)
             seen[target_dir] = true
         end
     end
-
     for _, files in pairs(index) do
         for _, file_path in ipairs(files) do
             local parent_dir_decoded = string.match(file_path, "^(.+)/[^/]+$")
@@ -70,11 +67,51 @@ function M.create_parents(x)
             end
         end
     end
+    local parents_of_parents = {}
+    local seen_parents = {}
+    for _, v in ipairs(parent_list) do
+        local current_path = v
+        while true do
+            local parent = string.match(current_path, "^(.+)/[^/]+$")
+            if not parent or seen_parents[parent] then
+                break
+            end
+            table.insert(parents_of_parents, parent)
+            seen_parents[parent] = true
+            current_path = parent
+        end
+    end
+    -- Combine parent_list and parents_of_parents, avoiding duplicates
+    local all_dirs = {}
+    local all_seen = {}
 
-    local missing_parents = filter(parent_list, utils.dir_missing)
-    if debug_mode then print "folders to create: " msg(missing_parents) end
-    map(missing_parents, lfs.mkdir) -- TODO lfs.mkdir doesn't create if parent doesn't exist
+    -- Add all directories from parent_list
+    for _, dir in ipairs(parent_list) do
+        if not all_seen[dir] then
+            table.insert(all_dirs, dir)
+            all_seen[dir] = true
+        end
+    end
 
+    -- Add all parent directories
+    for _, dir in ipairs(parents_of_parents) do
+        if not all_seen[dir] then
+            table.insert(all_dirs, dir)
+            all_seen[dir] = true
+        end
+    end
+
+    local missing_dirs = filter(all_dirs, utils.dir_missing)
+
+    -- Sort by path depth (shortest first) to ensure parents are created before children
+    table.sort(missing_dirs, function(a, b)
+        local depth_a = select(2, string.gsub(a, "/", ""))
+        local depth_b = select(2, string.gsub(b, "/", ""))
+        return depth_a < depth_b
+    end)
+
+    if debug_mode then print "folders to create: " msg(missing_dirs) end
+    map(missing_dirs, lfs.mkdir)
 end
 --------------------------------------------------------------------------------
 
