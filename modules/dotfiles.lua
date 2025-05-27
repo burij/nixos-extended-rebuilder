@@ -9,7 +9,7 @@ function M.sync(x)
 
     -- TODO sync single configuration files
     M.ensure_repository(conf.path)
-    M.create_parents(conf)
+    M.create_structure(conf)
     -- M.backup_targets()
     -- M.create_symlinks()
 
@@ -34,82 +34,52 @@ function M.ensure_repository(x)
 end
 
 --------------------------------------------------------------------------------
-function M.create_parents(x)
+function M.create_structure(x)
     local lfs = require "lfs"
     local utils = require "modules.utils"
-    local path = "/home/burij/Desktop/2508_Nixos-Extended-Rebuilder/temp"
-    local index = {
-        single = {"$HOME/Downloads/single.md" },
-        ["key with spaces"] = { "$HOME/Downloads/with space/single.md" },
-        multiple = {
-            "$HOME/Downloads/set/first file.md",
-            "$HOME/Downloads/set/second file.md",
-            "$HOME/Downloads/set/deeper/deep file.md",
-            "$HOME/Downloads/set/test/file/without/extension",
-        },
-    }
-    local parent_list = {}
-    local seen = {}  -- To avoid duplicates
-    for k, _ in pairs(index) do
-        local target_dir = path .. "/" .. k
-        if not seen[target_dir] then
-            table.insert(parent_list, target_dir)
-            seen[target_dir] = true
+    local path = is_string(x.path)
+    local index = is_dictionary(x.files)
+
+    local all_dirs = {}
+    local seen = {}
+
+    -- Helper function to add all parent directories of a path
+    local function add_all_parents(dir_path)
+        local current = dir_path
+        while current and current ~= "/" and not seen[current] do
+            table.insert(all_dirs, current)
+            seen[current] = true
+            current = string.match(current, "^(.+)/[^/]+$")
         end
     end
+
+    -- Add target directories (temp/key_name)
+    for k, _ in pairs(index) do
+        local target_dir = path .. "/" .. k
+        add_all_parents(target_dir)
+    end
+
+    -- Add file parent directories
     for _, files in pairs(index) do
         for _, file_path in ipairs(files) do
             local parent_dir_decoded = string.match(file_path, "^(.+)/[^/]+$")
-            local parent_dir = M.encode_home(parent_dir_decoded)
-            if parent_dir and not seen[parent_dir] then
-                table.insert(parent_list, parent_dir)
-                seen[parent_dir] = true
+            if parent_dir_decoded then
+                local parent_dir = M.encode_home(parent_dir_decoded)
+                if parent_dir then
+                    add_all_parents(parent_dir)
+                end
             end
         end
     end
-    local parents_of_parents = {}
-    local seen_parents = {}
-    for _, v in ipairs(parent_list) do
-        local current_path = v
-        while true do
-            local parent = string.match(current_path, "^(.+)/[^/]+$")
-            if not parent or seen_parents[parent] then
-                break
-            end
-            table.insert(parents_of_parents, parent)
-            seen_parents[parent] = true
-            current_path = parent
-        end
-    end
-    -- Combine parent_list and parents_of_parents, avoiding duplicates
-    local all_dirs = {}
-    local all_seen = {}
 
-    -- Add all directories from parent_list
-    for _, dir in ipairs(parent_list) do
-        if not all_seen[dir] then
-            table.insert(all_dirs, dir)
-            all_seen[dir] = true
-        end
-    end
-
-    -- Add all parent directories
-    for _, dir in ipairs(parents_of_parents) do
-        if not all_seen[dir] then
-            table.insert(all_dirs, dir)
-            all_seen[dir] = true
-        end
-    end
-
-    local missing_dirs = filter(all_dirs, utils.dir_missing)
-
-    -- Sort by path depth (shortest first) to ensure parents are created before children
-    table.sort(missing_dirs, function(a, b)
+    -- Sort by depth and create missing directories
+    table.sort(all_dirs, function(a, b)
         local depth_a = select(2, string.gsub(a, "/", ""))
         local depth_b = select(2, string.gsub(b, "/", ""))
         return depth_a < depth_b
     end)
 
+    local missing_dirs = filter(all_dirs, utils.dir_missing)
     if debug_mode then print "folders to create: " msg(missing_dirs) end
     map(missing_dirs, lfs.mkdir)
 end
