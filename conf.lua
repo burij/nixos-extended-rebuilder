@@ -33,14 +33,15 @@ conf.dot.path = "/home/burij/Desktop/2508_Nixos-Extended-Rebuilder/temp"
 
 
 conf.dot.files = {
-    bash = {"$HOME/.bash_history" },
-    blender = { "$HOME/.config/blender/4.2/config/userpref.blend" },
-    brave = {
-        "$HOME/.config/BraveSoftware/Brave-Browser/Default/Preferences",
-        "$HOME/.config/BraveSoftware/Brave-Browser/Local State"
-    },
-}
-
+        single = {"$HOME/Downloads/single.md" },
+        ["key with spaces"] = { "$HOME/Downloads/with space/single.md" },
+        multiple = {
+            "$HOME/Downloads/set/first file.md",
+            "$HOME/Downloads/set/second file.md",
+            "$HOME/Downloads/set/deeper/deep file.md",
+            "$HOME/Downloads/set/test/file/without/extension",
+        },
+    }
 
 
 --------------------------------------------------------------------------------

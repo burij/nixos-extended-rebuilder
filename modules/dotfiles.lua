@@ -49,8 +49,6 @@ function M.create_parents(x)
         },
     }
 
-
-
     local parent_list = {}
 
     local seen = {}  -- To avoid duplicates
@@ -64,7 +62,7 @@ function M.create_parents(x)
 
     for _, files in pairs(index) do
         for _, file_path in ipairs(files) do
-            local parent_dir_decoded = file_path:match("^(.+)/[^/]+$")
+            local parent_dir_decoded = string.match(file_path, "^(.+)/[^/]+$")
             local parent_dir = M.encode_home(parent_dir_decoded)
             if parent_dir and not seen[parent_dir] then
                 table.insert(parent_list, parent_dir)
@@ -83,7 +81,7 @@ end
 function M.encode_home(path)
     local home = os.getenv("HOME")
     if home then
-        return path:gsub("^%$HOME", home)
+        return string.gsub(path, "^%$HOME", home)
     end
     return path
 end
