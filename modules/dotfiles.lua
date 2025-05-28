@@ -43,45 +43,55 @@ function M.create_structure(x, y)
     local all_dirs = {}
     local seen = {}
 
-    -- Helper function to add all parent directories of a path
-    local function add_all_parents(dir_path)
-        local current = dir_path
-        while current and current ~= "/" and not seen[current] do
-            table.insert(all_dirs, current)
-            seen[current] = true
-            current = string.match(current, "^(.+)/[^/]+$")
-        end
-    end
-
     -- Add target directories (temp/key_name)
+    local target_paths = {}
     for k, _ in pairs(index) do
         local target_dir = path .. "/" .. k
-        add_all_parents(target_dir)
+        target_paths = M.add_all_parents(target_dir, all_dirs, seen)
     end
 
     -- Add file parent directories
+    local all_paths = target_paths
     for _, files in pairs(index) do
         for _, file_path in ipairs(files) do
             local parent_dir_decoded = string.match(file_path, "^(.+)/[^/]+$")
             if parent_dir_decoded then
                 local parent_dir = M.encode_home(parent_dir_decoded)
                 if parent_dir then
-                    add_all_parents(parent_dir)
+                    all_paths = M.add_all_parents(
+                        parent_dir, target_paths, seen
+                    )
                 end
             end
         end
     end
 
-    table.sort(all_dirs, function(a, b)
+    table.sort(all_paths, function(a, b)
         local depth_a = select(2, string.gsub(a, "/", ""))
         local depth_b = select(2, string.gsub(b, "/", ""))
         return depth_a < depth_b
     end)
 
-    local missing_dirs = filter(all_dirs, utils.dir_missing)
+    local missing_dirs = filter(all_paths, utils.dir_missing)
     if debug_mode then print "folders to create: " msg(missing_dirs) end
     map(missing_dirs, lfs.mkdir)
 end
+--------------------------------------------------------------------------------
+
+
+function M.add_all_parents(x, y, z)
+    local current = is_string(x)
+    local all_dirs = is_table(y)
+    local seen = is_table(z)
+    local result = y
+    while current and current ~= "/" and not seen[current] do
+        table.insert(all_dirs, current)
+        seen[current] = true
+        current = string.match(current, "^(.+)/[^/]+$")
+    end
+    return is_table(result)
+end
+
 --------------------------------------------------------------------------------
 
 function M.encode_home(path)
