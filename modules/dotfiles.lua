@@ -34,6 +34,7 @@ function M.ensure_repository(x)
 end
 
 --------------------------------------------------------------------------------
+
 function M.create_structure(x, y)
     local lfs = require "lfs"
     local utils = require "modules.utils"
@@ -43,27 +44,25 @@ function M.create_structure(x, y)
     local all_dirs = {}
     local seen = {}
 
-    -- Add target directories (temp/key_name)
     local target_paths = {}
     for k, _ in pairs(index) do
         local target_dir = path .. "/" .. k
         target_paths = M.add_all_parents(target_dir, all_dirs, seen)
     end
 
-    -- Add file parent directories
     local all_paths = target_paths
     for _, files in pairs(index) do
-        for _, file_path in ipairs(files) do
+          map(files, function(file_path)
             local parent_dir_decoded = string.match(file_path, "^(.+)/[^/]+$")
             if parent_dir_decoded then
                 local parent_dir = M.encode_home(parent_dir_decoded)
                 if parent_dir then
                     all_paths = M.add_all_parents(
-                        parent_dir, target_paths, seen
-                    )
+                            parent_dir, target_paths, seen
+                        )
                 end
             end
-        end
+        end)
     end
 
     table.sort(all_paths, function(a, b)
@@ -77,7 +76,6 @@ function M.create_structure(x, y)
     map(missing_dirs, lfs.mkdir)
 end
 --------------------------------------------------------------------------------
-
 
 function M.add_all_parents(x, y, z)
     local current = is_string(x)
