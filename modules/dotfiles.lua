@@ -9,7 +9,7 @@ function M.sync(x)
 
     -- TODO sync single configuration files
     M.ensure_repository(conf.path)
-    M.create_structure(conf)
+    M.create_structure(conf.path, conf.files)
     -- M.backup_targets()
     -- M.create_symlinks()
 
@@ -34,11 +34,11 @@ function M.ensure_repository(x)
 end
 
 --------------------------------------------------------------------------------
-function M.create_structure(x)
+function M.create_structure(x, y)
     local lfs = require "lfs"
     local utils = require "modules.utils"
-    local path = is_string(x.path)
-    local index = is_dictionary(x.files)
+    local path = is_string(x)
+    local index = is_dictionary(y)
 
     local all_dirs = {}
     local seen = {}
@@ -72,7 +72,6 @@ function M.create_structure(x)
         end
     end
 
-    -- Sort by depth and create missing directories
     table.sort(all_dirs, function(a, b)
         local depth_a = select(2, string.gsub(a, "/", ""))
         local depth_b = select(2, string.gsub(b, "/", ""))
