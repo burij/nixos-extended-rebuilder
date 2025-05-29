@@ -142,6 +142,19 @@ end
 
 --------------------------------------------------------------------------------
 
+function M.real_file(x)
+-- check, if file exist and is not a symlink
+    local file = is_string(x)
+    local lfs = require "lfs"
+    local result = false
+    local attributes = lfs.attributes(file)
+    local symlink = lfs.symlinkattributes(file)
+    if attributes and symlink.target==nil then result = true end
+    return result
+end
+
+--------------------------------------------------------------------------------
+
 function M.dir_exists(x)
     local path = is_string(x)
     local lfs = require "lfs"

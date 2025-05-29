@@ -10,7 +10,7 @@ function M.sync(x)
     -- TODO sync single configuration files
     M.ensure_repository(conf.path)
     M.create_structure(conf.path, conf.files)
-    -- M.backup_targets()
+    M.backup_targets(conf.path, conf.files)
     -- M.create_symlinks()
 
     -- TODO sync configuration folders
@@ -18,6 +18,35 @@ function M.sync(x)
     -- TODO import gnome-shell settings
 
 end
+
+--------------------------------------------------------------------------------
+
+function M.backup_targets(x, y)
+    local lfs = require "lfs"
+    local utils = require "modules.utils"
+    local path = is_string(x)
+    local index = is_dictionary(y)
+
+    local index_encoded = map(
+        M.extract_fileindex(path, index), M.encode_home
+    )
+    local index_filtered = filter(index_encoded, utils.real_file)
+
+    print "configs to back up: "
+    msg(index_filtered)
+    -- TODO rename sources, then copy target to source
+
+    for key, value in pairs(index_filtered) do
+        local attributes = lfs.attributes(key)
+        if attributes then
+            os.rename(key, key .. "." .. attributes.modification)
+        end
+        local test = os.rename(value, key) --TODO not working yet as expected
+        lfs.link(key, value, true)
+    end
+
+end
+
 --------------------------------------------------------------------------------
 
 function M.ensure_repository(x)
@@ -103,7 +132,7 @@ end
 --------------------------------------------------------------------------------
 
 function M.extract_fileindex(path, files)
-    -- normalize table to 1:1 table --> belongs to create symlinks
+    -- normalize table to 1:1 table
     local repo = is_path(path)
     local input = is_dictionary(files)
     local result = {}
@@ -116,7 +145,7 @@ function M.extract_fileindex(path, files)
         end
     end
 
-    if debug_mode then msg(result) end
+    if debug_mode then print "encoded index: " msg(result) end
     return is_dictionary(result)
 end
 
