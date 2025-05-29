@@ -7,11 +7,10 @@ function M.sync(x)
 
     print "syncing user configuration..."
 
-    -- TODO sync single configuration files
     M.ensure_repository(conf.path)
     M.create_structure(conf.path, conf.files)
     M.backup_targets(conf.path, conf.files)
-    -- M.create_symlinks()
+    M.create_symlinks(conf.path, conf.files)
 
     -- TODO sync configuration folders
     -- TODO backup gnome-shell settings
@@ -21,6 +20,27 @@ end
 
 --------------------------------------------------------------------------------
 
+function M.create_symlinks(x, y)
+    local lfs = require "lfs"
+    local path = is_string(x)
+    local index = is_dictionary(y)
+
+    local index_encoded = map(
+        M.extract_fileindex(path, index), M.encode_home
+    )
+    for key, value in pairs(index_encoded) do
+        local attributes = lfs.attributes(key)
+        local symlink = lfs.attributes(value)
+        if attributes and not symlink then
+            local link_cmd = string.format('ln -sf "%s" "%s"', key, value)
+            os.execute(link_cmd)
+            print(link_cmd)
+        end
+    end
+
+end
+
+--------------------------------------------------------------------------------
 function M.backup_targets(x, y)
     local lfs = require "lfs"
     local utils = require "modules.utils"

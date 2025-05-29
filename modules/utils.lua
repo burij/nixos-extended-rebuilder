@@ -149,7 +149,7 @@ function M.real_file(x)
     local result = false
     local attributes = lfs.attributes(file)
     local symlink = lfs.symlinkattributes(file)
-    if attributes and symlink.target==nil then result = true end
+    if attributes and symlink==nil then result = true end
     return result
 end
 
