@@ -34,17 +34,16 @@ function M.backup_targets(x, y)
 
     print "configs to back up: "
     msg(index_filtered)
-    -- TODO rename sources, then copy target to source
 
     for key, value in pairs(index_filtered) do
         local attributes = lfs.attributes(key)
         if attributes then
             os.rename(key, key .. "." .. attributes.modification)
         end
-        local test = os.rename(value, key) --TODO not working yet as expected
-        lfs.link(key, value, true)
+        local move_cmd = string.format('mv "%s" "%s"', value, key)
+        os.execute(move_cmd)
+        print(move_cmd)
     end
-
 end
 
 --------------------------------------------------------------------------------
