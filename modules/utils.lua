@@ -155,6 +155,19 @@ end
 
 --------------------------------------------------------------------------------
 
+function M.real_folder(x)
+-- check, if folder exist and is not a symlink
+    local folder = is_string(x)
+    local lfs = require "lfs"
+    local result = false
+    local attributes = lfs.attributes(folder)
+    local symlink = lfs.symlinkattributes(folder) --TODO symlink attributes doesn't work on folders?
+    if attributes.mode == "directory" and symlink==nil then result = true end
+    return result
+end
+
+--------------------------------------------------------------------------------
+
 function M.dir_exists(x)
     local path = is_string(x)
     local lfs = require "lfs"

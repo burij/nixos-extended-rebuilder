@@ -33,8 +33,7 @@ conf.dot.path = "/home/burij/Desktop/2508_Nixos-Extended-Rebuilder/temp"
 
 
 conf.dot.files = {
-        single = {"$HOME/Downloads/single.md" },
-        ["key with spaces"] = { "$HOME/Downloads/with space/single.md" },
+        ["one folder"] = { "$HOME/Downloads/subfolder/with space" },
         multiple = {
             "$HOME/Downloads/set/first file.md",
             "$HOME/Downloads/set/second file.md",

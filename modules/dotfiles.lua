@@ -50,10 +50,11 @@ function M.backup_targets(x, y)
     local index_encoded = map(
         M.extract_fileindex(path, index), M.encode_home
     )
+
     local index_filtered = filter(index_encoded, utils.real_file)
+    -- TODO index_filtered doesn't include folders
 
     print "configs to back up: "
-    msg(index_filtered)
 
     for key, value in pairs(index_filtered) do
         local attributes = lfs.attributes(key)
@@ -93,6 +94,18 @@ function M.create_structure(x, y)
     local seen = {}
 
     local target_paths = {}
+    -- TODO target_paths = filter(index, utils.real_folder)
+
+    do
+        print "TODO write test for utils.real_folder with single path"
+        msg(index["one folder"][1])
+        local folder_path = M.encode_home(index["one folder"][1])
+        msg(folder_path)
+        local folder_exists = utils.real_folder(folder_path)
+        msg(folder_exsists)
+        print "end of the test"
+    end
+
     for k, _ in pairs(index) do
         local target_dir = path .. "/" .. k
         target_paths = M.add_all_parents(target_dir, all_dirs, seen)
@@ -112,6 +125,8 @@ function M.create_structure(x, y)
             end
         end)
     end
+
+
 
     table.sort(all_paths, function(a, b)
         local depth_a = select(2, string.gsub(a, "/", ""))
