@@ -11,8 +11,9 @@ function M.sync(x)
     M.create_structure(conf.path, conf.files)
     M.backup_targets(conf.path, conf.files)
     M.create_symlinks(conf.path, conf.files)
+    -- TODO test all kind of symlinking (files, folders, etc.)
 
-    -- TODO sync configuration folders
+
     -- TODO backup gnome-shell settings
     -- TODO import gnome-shell settings
 
@@ -52,7 +53,6 @@ function M.backup_targets(x, y)
     )
 
     local index_filtered = filter(index_encoded, utils.real_file)
-    -- TODO index_filtered doesn't include folders
 
     print "configs to back up: "
 
@@ -93,8 +93,7 @@ function M.create_structure(x, y)
     local all_dirs = {}
     local seen = {}
 
-    -- local target_paths = {}
-    local target_paths = filter(index, utils.real_folder)
+    local target_paths = {}
 
     for k, _ in pairs(index) do
         local target_dir = path .. "/" .. k
