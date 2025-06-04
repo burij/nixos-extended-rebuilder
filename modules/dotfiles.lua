@@ -11,7 +11,7 @@ function M.sync(x)
     M.create_structure(conf.path, conf.files)
     M.backup_targets(conf.path, conf.files)
     M.create_symlinks(conf.path, conf.files)
-    -- TODO test all kind of symlinking (files, folders, etc.)
+    print "TODO test all kind of symlinking (files, folders, etc.)"
 
 
     -- TODO backup gnome-shell settings
