@@ -98,12 +98,13 @@ function M.create_structure(x, y)
 
     do
         print "TODO write test for utils.real_folder with single path"
+        local test = require "modules.utils"
         msg(index["one folder"][1])
         local folder_path = M.encode_home(index["one folder"][1])
         msg(folder_path)
-        local folder_exists = utils.real_folder(folder_path)
-        msg(folder_exsists)
-        print "end of the test"
+        local folder_exists = test.real_file(folder_path)
+        msg(folder_exists)
+        print "||||||||||||| end of the test"
     end
 
     for k, _ in pairs(index) do

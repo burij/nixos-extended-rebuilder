@@ -149,7 +149,7 @@ function M.real_file(x)
     local result = false
     local attributes = lfs.attributes(file)
     local symlink = lfs.symlinkattributes(file)
-    if attributes and symlink==nil then result = true end
+    if attributes and symlink.target==nil then result = true end
     return result
 end
 
@@ -161,8 +161,11 @@ function M.real_folder(x)
     local lfs = require "lfs"
     local result = false
     local attributes = lfs.attributes(folder)
-    local symlink = lfs.symlinkattributes(folder) --TODO symlink attributes doesn't work on folders?
-    if attributes.mode == "directory" and symlink==nil then result = true end
+    msg(attributes)
+    local symlink = lfs.symlinkattributes(folder)
+    msg(symlink.target)
+    if attributes.mode == "directory" and symlink.target==nil then result = true end
+    msg(result)
     return result
 end
 
