@@ -28,7 +28,7 @@ function M.system(x)
 
     dotfiles.sync(dot_confs)
 
-    --TODO create a postroutine execution
+    --TODO create a postroutine execution (some commands are in index)
 
     os.execute("nixos-rebuild list-generations | grep current")
 end

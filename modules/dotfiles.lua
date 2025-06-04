@@ -11,7 +11,7 @@ function M.sync(x)
     M.create_structure(conf.path, conf.files)
     M.backup_targets(conf.path, conf.files)
     M.create_symlinks(conf.path, conf.files)
-    print "TODO test all kind of symlinking (files, folders, etc.)"
+    print "TODO: index in the config is not complete yet"
 
 
     -- TODO backup gnome-shell settings
@@ -54,7 +54,7 @@ function M.backup_targets(x, y)
 
     local index_filtered = filter(index_encoded, utils.real_file)
 
-    print "configs to back up: "
+    print "syncing configs: "
 
     for key, value in pairs(index_filtered) do
         local attributes = lfs.attributes(key)
@@ -102,14 +102,14 @@ function M.create_structure(x, y)
 
     local all_paths = target_paths
     for _, files in pairs(index) do
-          map(files, function(file_path)
+        map(files, function(file_path)
             local parent_dir_decoded = string.match(file_path, "^(.+)/[^/]+$")
             if parent_dir_decoded then
                 local parent_dir = M.encode_home(parent_dir_decoded)
                 if parent_dir then
                     all_paths = M.add_all_parents(
-                            parent_dir, target_paths, seen
-                        )
+                        parent_dir, target_paths, seen
+                    )
                 end
             end
         end)
