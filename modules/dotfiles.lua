@@ -93,19 +93,8 @@ function M.create_structure(x, y)
     local all_dirs = {}
     local seen = {}
 
-    local target_paths = {}
-    -- TODO target_paths = filter(index, utils.real_folder)
-
-    do
-        print "TODO write test for utils.real_folder with single path"
-        local test = require "modules.utils"
-        msg(index["one folder"][1])
-        local folder_path = M.encode_home(index["one folder"][1])
-        msg(folder_path)
-        local folder_exists = test.real_file(folder_path)
-        msg(folder_exists)
-        print "||||||||||||| end of the test"
-    end
+    -- local target_paths = {}
+    local target_paths = filter(index, utils.real_folder)
 
     for k, _ in pairs(index) do
         local target_dir = path .. "/" .. k

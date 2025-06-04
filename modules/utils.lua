@@ -161,11 +161,10 @@ function M.real_folder(x)
     local lfs = require "lfs"
     local result = false
     local attributes = lfs.attributes(folder)
-    msg(attributes)
     local symlink = lfs.symlinkattributes(folder)
-    msg(symlink.target)
-    if attributes.mode == "directory" and symlink.target==nil then result = true end
-    msg(result)
+    if attributes.mode == "directory" and symlink.target==nil then
+        result = true
+    end
     return result
 end
 
