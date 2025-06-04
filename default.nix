@@ -44,15 +44,15 @@ let
     pname = "os";
     version = "1.0.0";
 
-    src = ./.;
+    # src = ./.;
 
     # Template for remote source
-    # src = pkgs.fetchFromGitHub {
-    #   owner = "burij";
-    #   repo = "hpln";
-    #   rev = "0.2";
-    #   sha256 = "sha256-H+ns/5mkbKuSQQwQ6vaECTmveSBYBUMr6YRRKokFKck=";
-    # };
+    src = pkgs.fetchFromGitHub {
+      owner = "burij";
+      repo = "nixos-extended-rebuilder";
+      rev = "0.1";
+      sha256 = "";
+    };
 
     extraFile = pkgs.fetchurl {
       url = "https://raw.githubusercontent.com/burij/"
