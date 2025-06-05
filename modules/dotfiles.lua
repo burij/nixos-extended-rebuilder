@@ -11,9 +11,19 @@ function M.sync(x)
     M.create_structure(conf.path, conf.files)
     M.backup_targets(conf.path, conf.files)
     M.create_symlinks(conf.path, conf.files)
+    M.sync_dconf(conf.path, conf.gnome)
+end
 
-    -- TODO backup gnome-shell settings
-    -- TODO import gnome-shell settings
+--------------------------------------------------------------------------------
+
+function M.sync_dconf(x, y)
+-- TODO sync gnome-shell
+    local repo = is_path(x.path)
+    local container = is_string(y.gnome) or "desktop"
+    local target = repo .. "/" .. container .. "/" .. dconf-settings.ini
+    if true then msg(target) end
+    -- dconf load / < /data/$USER/System/dotfiles/gnome-shell/dconf-settings.ini
+    -- dconf dump / > /data/$USER/System/dotfiles/gnome-shell/dconf-dump.ini
 
 end
 
