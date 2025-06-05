@@ -49,8 +49,8 @@ let
     src = pkgs.fetchFromGitHub {
       owner = "burij";
       repo = "nixos-extended-rebuilder";
-      rev = "$version";
-      sha256 = "";
+      rev = "0.2";
+      sha256 = "sha256-ddLGlZ9pokRZgdKLY96PdaIjrlFvZlCJqTrWM9JZHgU=";
     };
 
     extraFile = pkgs.fetchurl {
