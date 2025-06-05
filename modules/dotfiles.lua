@@ -17,14 +17,30 @@ end
 --------------------------------------------------------------------------------
 
 function M.sync_dconf(x, y)
--- TODO sync gnome-shell
-    local repo = is_path(x.path)
-    local container = is_string(y.gnome) or "desktop"
-    local target = repo .. "/" .. container .. "/" .. dconf-settings.ini
-    if true then msg(target) end
-    -- dconf load / < /data/$USER/System/dotfiles/gnome-shell/dconf-settings.ini
-    -- dconf dump / > /data/$USER/System/dotfiles/gnome-shell/dconf-dump.ini
+-- sync gnome-shell
+    local repo = is_string(x)
+    local container = y or "desktop-"
+    local utils = require "modules.utils"
+    local lfs = require "lfs"
+    local target = repo .. "/" .. container .. "/" .. "dconf-settings.ini"
+    if debug_mode then msg("dconf will load " .. target) end
 
+    local missing_dir = filter({repo .. "/" .. container}, utils.dir_missing)
+    if debug_mode then print "folder to create: " msg(missing_dir) end
+    map(missing_dir, lfs.mkdir)
+
+    if utils.real_file(target) then
+        local cmd = "dconf load / < " .. target
+        print(cmd)
+        os.execute(cmd)
+    else
+        print "no dconf configuration founds"
+    end
+
+    local timestamp = os.time()
+    local cmd = "dconf dump / > " .. target .. "." .. timestamp
+    print(cmd)
+    os.execute(cmd)
 end
 
 --------------------------------------------------------------------------------

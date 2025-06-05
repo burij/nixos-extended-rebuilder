@@ -30,6 +30,8 @@ conf.flatpaks = {
 
 conf.dot.path = "/home/burij/System/dotfiles"
 
+conf.dot.gnome = "desktop"
+
 conf.dot.files = {
     bash = { "$HOME/.bash_history" },
     blender = { "$HOME/.config/blender/4.2/config/userpref.blend" },
