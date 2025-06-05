@@ -49,7 +49,7 @@ let
     src = pkgs.fetchFromGitHub {
       owner = "burij";
       repo = "nixos-extended-rebuilder";
-      rev = $version;
+      rev = ${version};
       sha256 = "sha256-ddLGlZ9pokRZgdKLY96PdaIjrlFvZlCJqTrWM9JZHgU=";
     };
 
