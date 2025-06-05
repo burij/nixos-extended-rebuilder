@@ -5,11 +5,11 @@ A Lua-based tool for managing NixOS configurations and system rebuilds with exte
 ## Features
 
 - System rebuilding and upgrading
-- New machine setup automation
 - Configuration management
-- Garbage collection utilities
-- Server administration helpers
-- Flatpak support
+- Dotfiles synchronization
+- Flatpak application management
+- Debug mode for testing and configuration inspection
+- TUI interface (currently disabled)
 
 ## Prerequisites
 
@@ -41,42 +41,56 @@ os rebuild
 os upgrade
 ```
 
-### Setting Up a New Machine
+- Sync dotfiles:
+```bash
+os userconf
+```
 
-The tool provides automated setup for new NixOS machines with:
-- User configuration
-- Host configuration
-- Hardware configuration
-- State version management
-- Automatic backup of original configurations
+- Show help:
+```bash
+os help
+```
 
 ### Configuration
 
 The tool uses `conf.lua` for configuration settings. Key configuration options include:
 
-- System paths
-- User settings
-- Server configurations
-- Template settings
-- Garbage collection commands
-- Flatpak integration
+- System paths and entry points
+- NixOS channels
+- Flatpak applications
+- Dotfiles synchronization paths and patterns
+- Debug mode settings
 
-### Server Administration
+### Dotfiles Management
 
-Includes utilities for:
-- Docker container management
-- Volume management
-- Backup handling
-- Blog and website building
-- Nextcloud administration
+The tool provides comprehensive dotfiles management for various applications including:
+- Desktop environments (GNOME)
+- Development tools (Builder, Git)
+- Browsers (Brave)
+- Media applications (Darktable, REAPER, Tenacity)
+- Productivity tools (Nextcloud, Obsidian)
+- And many more
 
-## Development
+### Development
 
 The project is built with a modular Lua architecture:
 - Core functionality using `lua-light-wings`
 - Custom module loading system (`need.lua`)
 - Utility functions for file and system operations
-- JSON parsing and handling capabilities
+- Debug mode for testing and configuration inspection
+
+## Project Structure
+
+```
+.
+├── modules/         # Core functionality modules
+├── tui/            # Terminal User Interface (currently disabled)
+├── conf.lua        # Main configuration file
+├── default.nix     # Nix package configuration
+├── main.lua        # Application entry point
+├── need.lua        # Custom module loader
+└── README.md       # This file
+```
 
 ## License
 
@@ -91,4 +105,4 @@ Contributions are welcome! Please feel free to submit pull requests.
 Michael Burij
 
 ---
-**Note**: This project is currently work in progress (WIP).
+**Note**: This project is currently work in progress (WIP). Some features like the TUI interface are temporarily disabled.
