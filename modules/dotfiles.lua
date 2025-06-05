@@ -11,8 +11,6 @@ function M.sync(x)
     M.create_structure(conf.path, conf.files)
     M.backup_targets(conf.path, conf.files)
     M.create_symlinks(conf.path, conf.files)
-    print "TODO: index in the config is not complete yet"
-
 
     -- TODO backup gnome-shell settings
     -- TODO import gnome-shell settings
