@@ -27,7 +27,7 @@ local function application()
         local tui = require "tui"
         tui()
     elseif utils.val_in_tbl("help", arg) then
-        print "TODO create a module, which prints output of README.md"
+        print(utils.format_markdown("README.md"))
     elseif utils.val_in_tbl("userconf", arg) then
         local dotfiles = require "modules.dotfiles"
         dotfiles.sync(conf.dot)

@@ -196,4 +196,123 @@ function M.dir_missing(x)
 end
 
 --------------------------------------------------------------------------------
+
+function M.print_file_formatted(x)
+    filename = is_string(x)
+    local file = io.open(filename, "r")
+    if file then
+        io.input(file)
+        local content = io.read("*all")
+        io.close(file)
+
+        -- Print with word wrapping at 80 characters
+        local pos = 1
+        while pos <= string.len(content) do
+            local line_end = pos + 79
+            if line_end > string.len(content) then
+                print(string.sub(content, pos))
+                break
+            end
+
+            -- Find last space before 80 chars to avoid breaking words
+            local search_start = math.max(pos, line_end - 20)
+            local last_space = nil
+
+            for i = line_end, search_start, -1 do
+                if string.sub(content, i, i) == " " then
+                    last_space = i
+                    break
+                end
+            end
+
+            if last_space and last_space > pos then
+                line_end = last_space
+            end
+
+            print(string.sub(content, pos, line_end))
+            pos = line_end + 1
+        end
+    else
+        print("Could not open file: " .. filename)
+    end
+end
+
+--------------------------------------------------------------------------------
+
+function M.format_markdown(filename)
+    local file = io.open(filename, "r")
+    if not file then
+        print("Could not open file: " .. filename)
+        return
+    end
+
+    io.input(file)
+    local content = io.read("*all")
+    io.close(file)
+
+    content = string.gsub(content, "^%s*#+%s*(.-)%s*$", "%1")
+    content = string.gsub(content, "\n%s*#+%s*(.-)%s*", "\n%1")
+
+    content = string.gsub(content, "```.-```", function(match)
+        local code = string.gsub(match, "```[^\n]*\n?", "")
+        code = string.gsub(code, "\n```", "")
+        -- Indent each line with 4 spaces
+        code = string.gsub(code, "([^\n]+)", "    %1")
+        return "\n" .. code .. "\n"
+    end)
+
+    content = string.gsub(content, "`([^`]+)`", "[%1]")
+    content = string.gsub(content, "%*%*(.-)%*%*", "%1")
+    content = string.gsub(content, "%*(.-)%*", "%1")
+    content = string.gsub(content, "%[(.-)%]%((.-)%)", "%1 (%2)")
+    content = string.gsub(content, "^%s*[-*+] ", "• ")
+
+    local function wrap_text(text)
+        local result = {}
+        local pos = 1
+
+        while pos <= string.len(text) do
+            local line_end = pos + 79
+            if line_end >= string.len(text) then
+                table.insert(result, string.sub(text, pos))
+                break
+            end
+
+            local last_space = nil
+            local search_start = math.max(pos, line_end - 20)
+
+            for i = line_end, search_start, -1 do
+                if string.sub(text, i, i) == " " then
+                    last_space = i
+                    break
+                end
+            end
+
+            if last_space and last_space > pos then
+                line_end = last_space - 1  -- Don't include the space
+                table.insert(result, string.sub(text, pos, line_end))
+                pos = last_space + 1  -- Skip the space
+            else
+                table.insert(result, string.sub(text, pos, line_end))
+                pos = line_end + 1
+            end
+        end
+
+        return table.concat(result, "\n")
+    end
+
+    local paragraphs = {}
+    for paragraph in string.gmatch(content, "[^\n\n]+") do
+        if string.match(paragraph, "^%s*$") then
+            table.insert(paragraphs, "")
+        else
+            table.insert(paragraphs, wrap_text(paragraph))
+        end
+    end
+
+    local result = table.concat(paragraphs, "\n\n")
+    return is_string(result)
+end
+
+--------------------------------------------------------------------------------
 return M
