@@ -18,7 +18,7 @@ let
   shell = pkgs.mkShell {
     buildInputs = [ luaEnv dependencies ];
     shellHook = ''
-      export LUAOS="./conf.lua"
+      # export LUAOS="./conf.lua"
       alias run='lua main.lua'
       alias os-out='./result/bin/os'
       alias os-dev='lua main.lua'
