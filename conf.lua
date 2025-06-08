@@ -5,9 +5,7 @@ conf.debug_mode = false
 
 conf.entry_path = "/etc/nixos/configuration.nix"
 
-conf.channels = {
-    "nixos https://nixos.org/channels/nixos-unstable"
-}
+conf.channels = {"nixos https://nixos.org/channels/nixos-unstable"}
 
 conf.flatpaks = {}
 

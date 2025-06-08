@@ -23,6 +23,7 @@ local function application()
         rebuild.system(conf)
     elseif utils.val_in_tbl("help", arg) then
         print(utils.format_markdown("README.md"))
+        -- TODO make better help-output
     elseif utils.val_in_tbl("userconf", arg) then
         local dotfiles = require "modules.dotfiles"
         dotfiles.sync(conf.dot)
