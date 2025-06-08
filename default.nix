@@ -42,14 +42,14 @@ let
 
   package = pkgs.stdenv.mkDerivation {
     pname = "os";
-    version = "0.2";
+    version = "0.8";
 
     # src = ./.;
 
     src = pkgs.fetchFromGitHub {
       owner = "burij";
       repo = "nixos-extended-rebuilder";
-      rev = "0.2";
+      rev = "0.8";
       sha256 = "sha256-2fLrpmIpfU/F627PgB+VtSGH9fTobJFAgcfa/y5Y3Y4=";
     };
 
