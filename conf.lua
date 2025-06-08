@@ -4,8 +4,18 @@ local conf = { dot = {} }
 
 conf.help = [[
 
-TODO write manual
+Run: os option
 
+Options:
+    rebuild     :   creates generation, based on conf.entry_path,
+                    installs flatpaks, syncs user configuration, runs commands
+                    from conf.postroutine
+    userconf    :   syncs user configuration
+    upgrade     :   same as rebuild + upgrades all nix packages to the latest
+                    version
+    version     :   shows version and current NixOS generation
+
+TODO: additional explainations
 ]]
 
 --------------------------------------------------------------------------------

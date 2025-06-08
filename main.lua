@@ -9,6 +9,18 @@ local tests = require "modules.tests"
 --------------------------------------------------------------------------------
 
 local function application()
+    if utils.val_in_tbl("help", arg) then
+        local defaultconf = require "conf"
+        print(version)
+        print(defaultconf.help or "Documentation missing")
+        os.exit()
+    elseif utils.val_in_tbl("version", arg) then
+        print(version)
+        print "NixOS state:"
+        os.execute("nixos-rebuild list-generations | grep current")
+        os.exit()
+    end
+
     local default_conf_path = os.getenv("HOME") .. "/.nixconf.lua"
     local conf_path = os.getenv("LUAOS") or default_conf_path
     utils.new_config(conf_path, default_conf_path)
@@ -23,20 +35,9 @@ local function application()
     if utils.val_in_tbl("rebuild", arg) or utils.val_in_tbl("upgrade", arg) then
         rebuild.system(conf)
 
-    elseif utils.val_in_tbl("help", arg) then
-        local defaultconf = require "conf"
-        print(version)
-        print(defaultconf.help)
-
     elseif utils.val_in_tbl("userconf", arg) then
         local dotfiles = require "modules.dotfiles"
         dotfiles.sync(conf.dot)
-
-    elseif utils.val_in_tbl("version", arg) then
-        print(version)
-        print "NixOS version:"
-        os.execute("nixos-rebuild list-generations | grep current")
-
     else
         print "argument missing. please run 'os help' to learn more."
     end
