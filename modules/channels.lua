@@ -16,6 +16,8 @@ function M.sync(x)
         return is_table(result)
     end
     local current_channels = str_to_table(get_channels)
+    if debug_mode then print "current channels: " end
+    if debug_mode then msg(current_channels) end
     local channels_div = utils.tbl_div(current_channels, target_channels)
 
     -- Process removes first
@@ -38,6 +40,7 @@ function M.sync(x)
 
     -- Combine commands, no need for final update since each install does it
     local result = utils.compose_list(process_removes, process_installs)
+    if debug_mode then msg(result) end
     return is_table(result)
 end
 

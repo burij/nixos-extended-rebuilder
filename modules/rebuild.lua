@@ -4,7 +4,7 @@ local M = {}
 
 function M.system(x)
     -- runs complete system rebuild/upgrade
-    local path = is_path(x.entry_path) or "/etc/nixos/configuration.nix"
+    local path = is_path(x.entry_path or "/etc/nixos/configuration.nix")
     local target_channels = is_list(x.channels)
     local flatpak_list = is_list(x.flatpaks)
     local channels = require "modules.channels"
@@ -12,6 +12,7 @@ function M.system(x)
     local flatpak = require "modules.flatpak"
     local dotfiles = require "modules.dotfiles"
     local dot_confs = is_table(x.dot)
+    local script = is_list(x.postroutine  or {})
 
     print "nixos extended rebuilder is cooking your config..."
     channels.sync(target_channels)
@@ -27,8 +28,7 @@ function M.system(x)
     end
 
     dotfiles.sync(dot_confs)
-
-    --TODO create a postroutine execution (some commands are in index)
+    map(script, os.execute)
 
     os.execute("nixos-rebuild list-generations | grep current")
 end

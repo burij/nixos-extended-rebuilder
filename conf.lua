@@ -11,12 +11,13 @@ conf.channels = {
 
 conf.flatpaks = {}
 
+conf.postroutine = {}
+
 conf.dot.path =  os.getenv("HOME") .. "/.dotfiles"
 
 conf.dot.gnome = "desktop"
 
 conf.dot.files = {}
-
 
 --------------------------------------------------------------------------------
 return conf
