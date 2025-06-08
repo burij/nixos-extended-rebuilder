@@ -136,7 +136,49 @@ function M.new_config(path, default_path)
     local file = io.open(path, "r")
     if file then
         io.close(file)
-    else msg "TODO process to create a new config file in utils.new_config"
+    else
+        local content = M.read_file("conf")
+        os.execute("touch " .. default_path)
+        M.write_file(default_path, content)
+        print("configuration template created. path: " .. default_path)
+        print "modify, execute:"
+        print('export LUAOS="' .. default_path .. '"')
+        print "and run again"
+        os.exit()
+    end
+end
+
+--------------------------------------------------------------------------------
+
+function M.read_file(file)
+    local x = is_string(file)
+    local filepath = package.searchpath(x, package.path)
+
+    if not filepath then
+        filepath = x
+    end
+
+    local file = io.open(filepath, "r")
+    if file then
+        local content = file:read("*all")
+        file:close()
+        return is_string(content)
+    else
+        return filepath .. " not readable!"
+    end
+end
+
+--------------------------------------------------------------------------------
+
+function M.write_file(filename, content)
+    x = is_string(filename)
+    y = is_string(content)
+    local file = io.open(x, "w")
+    if file then
+        file:write(y)
+        file:close()
+    else
+        error("Unable to open file for writing: " .. x)
     end
 end
 
