@@ -1,4 +1,5 @@
 local M = {} _G.need = require "need"
+local version = "NixOS extended rebuilder, Version 0.9-pre"
 
 local core = require "modules.lua-light-wings" core.globalize(core)
 local utils = require "modules.utils"
@@ -21,12 +22,21 @@ local function application()
 
     if utils.val_in_tbl("rebuild", arg) or utils.val_in_tbl("upgrade", arg) then
         rebuild.system(conf)
+
     elseif utils.val_in_tbl("help", arg) then
-        print(utils.format_markdown("README.md"))
-        -- TODO make better help-output
+        local defaultconf = require "conf"
+        print(version)
+        print(defaultconf.help)
+
     elseif utils.val_in_tbl("userconf", arg) then
         local dotfiles = require "modules.dotfiles"
         dotfiles.sync(conf.dot)
+
+    elseif utils.val_in_tbl("version", arg) then
+        print(version)
+        print "NixOS version:"
+        os.execute("nixos-rebuild list-generations | grep current")
+
     else
         print "argument missing. please run 'os help' to learn more."
     end

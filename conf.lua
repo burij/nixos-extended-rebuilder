@@ -1,6 +1,14 @@
 local conf = { dot = {} }
 
 --------------------------------------------------------------------------------
+
+conf.help = [[
+
+TODO write manual
+
+]]
+
+--------------------------------------------------------------------------------
 conf.debug_mode = false
 
 conf.entry_path = "/etc/nixos/configuration.nix"
