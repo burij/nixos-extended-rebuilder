@@ -50,7 +50,7 @@ let
       owner = "burij";
       repo = "nixos-extended-rebuilder";
       rev = "0.8";
-      sha256 = "";
+      sha256 = "sha256-rc2OiV/VssrdhTaGRBeXLlJsd2PUu28IkBfMoRbYiBg=";
     };
 
     extraFile = pkgs.fetchurl {
