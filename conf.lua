@@ -4,9 +4,10 @@ local conf = { dot = {} }
 
 conf.help = [[
 
-Run: os option
+Run: os [option]
 
 Options:
+    help        :   shows this dialog
     rebuild     :   creates generation, based on conf.entry_path,
                     installs flatpaks, syncs user configuration, runs commands
                     from conf.postroutine
@@ -15,7 +16,12 @@ Options:
                     version
     version     :   shows version and current NixOS generation
 
-TODO: additional explainations
+$LUAOS is used to determine path of the configuration file. If the variable not
+set or file does not exist, default template will be created during first run in
+$HOME/.nixconf.lua
+
+Documentation: <https://github.com/burij/nixos-extended-rebuilder/>.
+Help with Lua syntax: <https://lua.org>.
 ]]
 
 --------------------------------------------------------------------------------
