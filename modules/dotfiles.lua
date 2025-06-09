@@ -29,6 +29,9 @@ function M.sync_dconf(x, y)
     if debug_mode then print "folder to create: " msg(missing_dir) end
     map(missing_dir, lfs.mkdir)
 
+    local timestamp = os.time()
+    local cmd = "dconf dump / > " .. target .. "." .. timestamp
+
     if utils.real_file(target) then
         local cmd = "dconf load / < " .. target
         print(cmd)
@@ -37,8 +40,6 @@ function M.sync_dconf(x, y)
         print "no dconf configuration founds"
     end
 
-    local timestamp = os.time()
-    local cmd = "dconf dump / > " .. target .. "." .. timestamp
     print(cmd)
     os.execute(cmd)
 end

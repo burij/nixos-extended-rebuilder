@@ -34,13 +34,15 @@ local function application()
 
     if utils.val_in_tbl("rebuild", arg) or utils.val_in_tbl("upgrade", arg) then
         rebuild.system(conf)
-
     elseif utils.val_in_tbl("userconf", arg) then
         local dotfiles = require "modules.dotfiles"
         dotfiles.sync(conf.dot)
+    elseif utils.val_in_tbl("cleanup", arg) then
+        msg "TODO create garbage collecting routine"
     else
         print "argument missing. please run 'os help' to learn more."
     end
+
 end
 
 --------------------------------------------------------------------------------
