@@ -73,7 +73,7 @@ To make this permanent, add it to your NixOS configuration:
 ```nix
 # configuration.nix
 environment.sessionVariables = {
-  LUAOS = "$HOME/System/nixconf.lua";
+  LUAOS = "/path/to/your/nixconf.lua";
 };
 ```
 
@@ -84,6 +84,103 @@ NixOS Extended Rebuilder provides a simple approach to manage user configuration
 #### Configuration Structure
 
 Declare dotfiles for synchronization using the `conf.dot.files` table:
+
+```lua
+-- nixconf.lua
+conf.dot = {
+  path = "/home/user/dotfiles",  -- Main dotfiles repository
+  files = {
+    nvim = {
+      ".config/nvim/init.lua",
+      ".config/nvim/lua/",
+    },
+    shell = {
+      ".bashrc",
+      ".zshrc",
+    },
+    desktop = {
+      ".config/gtk-3.0/settings.ini",
+      ".local/share/applications/",
+    }
+  },
+  gnome = "gnome"  -- GNOME dconf settings path (subfolder of path)
+}
+```
+
+#### How Dotfiles Sync Works
+
+1. **Repository Creation**: Creates the main dotfiles repository if it doesn't exist
+2. **Structure Setup**: Automatically creates necessary subfolders and target directory structure
+3. **File Protection**: 
+   - If a config file exists in target location but not in repository → moves it to repository
+   - If file exists in both locations → renames target file with timestamp and moves to repository
+4. **Symlink Creation**: Creates symlinks for all files and folders in the repository
+5. **GNOME Integration**: Dumps dconf database and loads declarative settings
+
+#### Safety Features
+
+- **No data loss**: All existing configurations are backed up with timestamps
+- **Conflict resolution**: Handles applications that overwrite symlinks (like Brave browser)
+- **Version control ready**: Repository structure is designed for Git tracking
+
+**Recommendation**: Track your dotfiles repository with version control for additional safety.
+
+### Channel Management
+
+Declare NixOS channels in your configuration:
+
+```lua
+conf.channels = {
+  "nixos https://nixos.org/channels/nixos-25.05",
+  "nixpkgs https://nixos.org/channels/nixpkgs-unstable"
+}
+```
+
+### Custom Commands
+
+Define commands to run after system rebuild:
+
+```lua
+conf.postroutine = {
+  "systemctl --user restart some-service",
+  "notify-send 'System rebuilt successfully'"
+}
+```
+
+## Development
+
+### Getting Started
+
+```bash
+git clone https://github.com/burij/nixos-extended-rebuilder.git
+cd nixos-extended-rebuilder
+nix-shell -A shell
+```
+
+### Development Commands
+
+Inside the development shell:
+
+```bash
+os-dev [option]  # Run development version
+```
+
+### Project Structure
+
+```
+.
+├── modules/         # Core functionality modules
+├── conf.lua        # Main configuration file template
+├── default.nix     # Nix package and shell configuration
+├── main.lua        # Application entry point
+├── need.lua        # Custom module loader
+└── README.md       # Documentation
+```
+
+## Examples
+
+### Complete Configuration Example
+
 
 ```lua
 -- .nixconf.lua
@@ -129,118 +226,7 @@ conf.postroutine = { -- list of commands which will be executed after rebuild
 return conf
 ```
 
-#### How Dotfiles Sync Works
-
-1. **Repository Creation**: Creates the main dotfiles repository if it doesn't exist
-2. **Structure Setup**: Automatically creates necessary subfolders and target directory structure
-3. **File Protection**: 
-   - If a config file exists in target location but not in repository → moves it to repository
-   - If file exists in both locations → renames target file with timestamp and moves to repository
-4. **Symlink Creation**: Creates symlinks for all files and folders in the repository
-5. **GNOME Integration**: Dumps dconf database and loads declarative settings
-
-#### Safety Features
-
-- **No data loss**: All existing configurations are backed up with timestamps
-- **Conflict resolution**: Handles applications that overwrite symlinks (like Brave browser)
-- **Version control ready**: Repository structure is designed for Git tracking
-
-**Recommendation**: Track your dotfiles repository with version control for additional safety.
-
-### Channel Management
-
-Declare NixOS channels in your configuration:
-
-```lua
-conf.channels = {
-  nixos = "https://nixos.org/channels/nixos-24.05",
-  nixpkgs-unstable = "https://nixos.org/channels/nixpkgs-unstable"
-}
-```
-
-### Custom Commands
-
-Define commands to run after system rebuild:
-
-```lua
-conf.post_rebuild = {
-  "systemctl --user restart some-service",
-  "notify-send 'System rebuilt successfully'"
-}
-```
-
-## Development
-
-### Getting Started
-
-```bash
-git clone https://github.com/burij/nixos-extended-rebuilder.git
-cd nixos-extended-rebuilder
-nix-shell -A shell
-```
-
-### Development Commands
-
-Inside the development shell:
-
-```bash
-os-dev [option]  # Run development version
-```
-
-### Project Structure
-
-```
-.
-├── modules/         # Core functionality modules
-├── conf.lua        # Main configuration file template
-├── default.nix     # Nix package and shell configuration
-├── main.lua        # Application entry point
-├── need.lua        # Custom module loader
-└── README.md       # Documentation
-```
-
-## Examples
-
-### Complete Configuration Example
-
-```lua
--- ~/.nixconf.lua or your custom path
-conf = {}
-
--- System configuration
-conf.nixos_config = "/etc/nixos"
-conf.debug = false
-
--- Channels
-conf.channels = {
-  nixos = "https://nixos.org/channels/nixos-24.05"
-}
-
--- Dotfiles
-conf.dot = {
-  path = os.getenv("HOME") .. "/dotfiles",
-  files = {
-    shell = { ".bashrc", ".zshrc" },
-    editor = { ".config/nvim/" }
-  },
-  gnome = os.getenv("HOME") .. "/dotfiles/gnome"
-}
-
--- Post-rebuild commands
-conf.post_rebuild = {
-  "echo 'Rebuild completed at ' $(date)"
-}
-
-return conf
-```
-
 ## Troubleshooting
-
-### Common Issues
-
-- **Permission errors**: Ensure your user has sudo privileges for system rebuilds
-- **Missing dependencies**: Make sure Lua and required Nix tools are available
-- **Symlink conflicts**: Check for applications that overwrite symlinks
 
 ### Debug Mode
 
