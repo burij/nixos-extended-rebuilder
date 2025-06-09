@@ -86,25 +86,47 @@ NixOS Extended Rebuilder provides a simple approach to manage user configuration
 Declare dotfiles for synchronization using the `conf.dot.files` table:
 
 ```lua
--- nixconf.lua
-conf.dot = {
-  path = "/home/user/dotfiles",  -- Main dotfiles repository
-  files = {
-    nvim = {
-      ".config/nvim/init.lua",
-      ".config/nvim/lua/",
-    },
-    shell = {
-      ".bashrc",
-      ".zshrc",
-    },
-    desktop = {
-      ".config/gtk-3.0/settings.ini",
-      ".local/share/applications/",
-    }
-  },
-  gnome = "/home/user/dotfiles/gnome"  -- GNOME dconf settings path
+-- .nixconf.lua
+local conf = { dot = {} }
+
+conf.debug_mode = false
+
+
+conf.entry_path = "/etc/nixos/configuration.nix" -- this file will be evaluated, no matter what's your system default is
+
+
+conf.channels = { -- multiple channels can be also declared
+    "nixos https://nixos.org/channels/nixos-25.05"
 }
+
+conf.flatpaks = {
+    "page.codeberg.libre_menu_editor.LibreMenuEditor",
+    "org.gnome.Builder",
+    "com.nextcloud.desktopclient.nextcloud",
+}
+
+conf.dot.path = "/home/joe/.dotfiles" -- configuration files will be moved here
+
+conf.dot.gnome = "desktop" -- subfolder for dconf import/export
+
+conf.dot.files = { -- this table will be evaluated for user settings configuration sync
+    bash = { "/home/joe/.bash_history" }, -- script will create subfolder bash inside .dotfiles and move .bash_history there
+    obsidian = { -- one subfolder can contain multiple configuration files or subfolders
+        "/home/joe/.config/obsidian/Preferences",
+        "/home/joe/.config/obsidian/obsidian.json",
+        "/home/joe/.obsidian",
+        "/home/joe/.config/obsidian/Dictionaries/de-DE-3-0.bdic",
+        "/home/joe/.config/obsidian/Dictionaries/en-US-10-1.bdic"
+    },
+    vst = {
+        "/home/joe/.vst"
+    }
+}
+
+conf.postroutine = { -- list of commands which will be executed after rebuild
+    "sudo flatpak override --filesystem=host org.gnome.Builder",
+}
+return conf
 ```
 
 #### How Dotfiles Sync Works
