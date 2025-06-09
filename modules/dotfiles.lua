@@ -31,6 +31,8 @@ function M.sync_dconf(x, y)
 
     local timestamp = os.time()
     local cmd = "dconf dump / > " .. target .. "." .. timestamp
+    os.execute(cmd)
+    print(cmd)
 
     if utils.real_file(target) then
         local cmd = "dconf load / < " .. target
@@ -40,8 +42,6 @@ function M.sync_dconf(x, y)
         print "no dconf configuration founds"
     end
 
-    print(cmd)
-    os.execute(cmd)
 end
 
 --------------------------------------------------------------------------------
