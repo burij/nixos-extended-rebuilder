@@ -1,5 +1,5 @@
 local M = {} _G.need = require "need"
-local version = "NixOS extended rebuilder, Version 0.9.1"
+local version = "NixOS extended rebuilder, Version 0.9.2"
 
 local core = require "modules.lua-light-wings" core.globalize(core)
 local utils = require "modules.utils"
