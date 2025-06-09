@@ -14,7 +14,7 @@ function M.system(x)
     local dot_confs = is_table(x.dot)
     local script = is_list(x.postroutine  or {})
 
-    print "nixos extended rebuilder is cooking your config..."
+    print "NixOS Extended Rebuilder is cooking your config..."
     channels.sync(target_channels)
 
     M.nixos_rebuild(path)
