@@ -1,8 +1,10 @@
 local M = {}
 
+
 function M.sync(x)
+-- TODO test the function properly, looks, like it may not work properly
     local target_channels = is_table(x)
-    local utils = need "utils"
+    local utils = require "modules.utils"
     local get_channels = utils.run_and_store(
         "sudo nix-channel --list",
         ""
@@ -41,6 +43,7 @@ function M.sync(x)
     -- Combine commands, no need for final update since each install does it
     local result = utils.compose_list(process_removes, process_installs)
     if debug_mode then msg(result) end
+    map(result, os.execute)
     return is_table(result)
 end
 
