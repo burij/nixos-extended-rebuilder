@@ -4,15 +4,14 @@ function M.run(options)
     local x = is_dictionary(options)
     local version = is_string(options.version)
     local utils = require "modules.utils"
-    local tests = require "modules.tests"
+    local conf = is_dictionary(options)
+    local flag = is_table(options.arguments)
 
-
-    if utils.val_in_tbl("help", arg) then
-        local defaultconf = x
+    if utils.val_in_tbl("help", flag) then
         print(version)
-        print(defaultconf.help or "Documentation missing")
+        print(conf.help or "Documentation missing")
         os.exit()
-    elseif utils.val_in_tbl("version", arg) then
+    elseif utils.val_in_tbl("version", flag) then
         print(version)
         print "NixOS state:"
         os.execute("nixos-rebuild list-generations | grep current")
@@ -23,24 +22,13 @@ function M.run(options)
         os.exit()
     end
 
-    local default_conf_path = os.getenv("HOME") .. "/.nixconf.lua"
-    local conf_path = os.getenv("LUAOS") or default_conf_path
-    utils.new_config(conf_path, default_conf_path)
-    local conf = utils.get_configuration(conf_path)
-    _G.debug_mode = conf.debug_mode
-
-    if debug_mode then
-        tests.prestart()
-        tests.show_config(conf)
-    end
-
-    if utils.val_in_tbl("rebuild", arg) or utils.val_in_tbl("upgrade", arg) then
+    if utils.val_in_tbl("rebuild", flag) or utils.val_in_tbl("upgrade", flag) then
         local rebuild = require "modules.rebuild"
         rebuild.system(conf)
-    elseif utils.val_in_tbl("userconf", arg) then
+    elseif utils.val_in_tbl("userconf", flag) then
         local dotfiles = require "modules.dotfiles"
         dotfiles.sync(conf.dot)
-    elseif utils.val_in_tbl("cleanup", arg) then
+    elseif utils.val_in_tbl("cleanup", flag) then
         msg "TODO create garbage collecting routine"
     else
         print "argument missing. please run 'os help' to learn more."
