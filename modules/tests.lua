@@ -1,7 +1,7 @@
 local M = {} _G.need = require "need"
 --------------------------------------------------------------------------------
 
-M.prestart = function ()
+function M.prestart()
     print "debug mode is on"
     M.dotted_line()
     local core = require "modules.lua-light-wings" core.globalize(core)
@@ -12,7 +12,7 @@ end
 
 --------------------------------------------------------------------------------
 
-M.show_config = function (x)
+function M.show_config(x)
     is_table(x)
     msg("content of the loaded configuration:")
     msg(x)

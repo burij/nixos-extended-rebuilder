@@ -240,7 +240,7 @@ end
 --------------------------------------------------------------------------------
 
 function M.print_file_formatted(x)
-    filename = is_string(x)
+    local filename = is_string(x)
     local file = io.open(filename, "r")
     if file then
         io.input(file)
