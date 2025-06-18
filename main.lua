@@ -6,8 +6,8 @@ local conf_path = os.getenv("LUAOS") or default_conf_path
 local utils = require "modules.utils"
 utils.new_config(conf_path, default_conf_path)
 local conf = utils.get_configuration(conf_path)
-_G.debug_mode = conf.debug_mode
 
+_G.debug_mode = conf.debug_mode
 if debug_mode then
     local tests = require "modules.tests"
     tests.prestart()
