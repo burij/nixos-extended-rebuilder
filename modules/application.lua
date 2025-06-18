@@ -46,8 +46,8 @@ function M.settings()
     local conf_path = os.getenv("LUAOS") or default_conf_path
     local utils = require "modules.utils"
     utils.new_config(conf_path, default_conf_path)
-    local conf = utils.get_configuration(conf_path)
-    return conf
+    local result = utils.get_configuration(conf_path)
+    return is_dictionary(result)
 end
 
 --------------------------------------------------------------------------------
