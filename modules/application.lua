@@ -15,6 +15,7 @@ function M.run(options)
     elseif utils.val_in_tbl("version", arg) then
         print(version)
         print "NixOS state:"
+        os.execute("nixos-rebuild list-generations | grep current")
         os.execute(
             "nixos-rebuild list-generations | " ..
             "grep 'True' | awk '{print $1, $2, $3, $4, $5}'"
