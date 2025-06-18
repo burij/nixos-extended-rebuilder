@@ -1,5 +1,7 @@
 local M = {}
 
+--------------------------------------------------------------------------------
+
 function M.run(options)
     local x = is_dictionary(options)
     local version = is_string(options.version)
@@ -22,7 +24,8 @@ function M.run(options)
         os.exit()
     end
 
-    if utils.val_in_tbl("rebuild", flag) or utils.val_in_tbl("upgrade", flag) then
+    if utils.val_in_tbl("rebuild", flag)
+    or utils.val_in_tbl("upgrade", flag) then
         local rebuild = require "modules.rebuild"
         rebuild.system(conf)
     elseif utils.val_in_tbl("userconf", flag) then
@@ -35,5 +38,18 @@ function M.run(options)
     end
 
 end
+
+--------------------------------------------------------------------------------
+
+function M.settings()
+    local default_conf_path = os.getenv("HOME") .. "/.nixconf.lua"
+    local conf_path = os.getenv("LUAOS") or default_conf_path
+    local utils = require "modules.utils"
+    utils.new_config(conf_path, default_conf_path)
+    local conf = utils.get_configuration(conf_path)
+    return conf
+end
+
+--------------------------------------------------------------------------------
 
 return M
