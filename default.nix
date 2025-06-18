@@ -23,6 +23,7 @@ let
       alias os-out='./result/bin/os'
       alias os-dev='lua main.lua'
       alias make='rm result;git add .;build;git commit -m '
+      mkdir modules
 
       cp ${pkgs.fetchurl {
         url = "https://raw.githubusercontent.com/burij/"

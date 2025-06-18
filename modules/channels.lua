@@ -2,7 +2,6 @@ local M = {}
 
 
 function M.sync(x)
--- TODO test the function properly, looks, like it may not work properly
     local target_channels = is_table(x)
     local utils = require "modules.utils"
     local get_channels = utils.run_and_store(
