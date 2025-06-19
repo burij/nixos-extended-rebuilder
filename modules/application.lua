@@ -4,10 +4,11 @@ local M = {}
 
 function M.run(options)
     local x = is_dictionary(options)
-    local version = is_string(options.version)
-    local utils = require "modules.utils"
     local conf = is_dictionary(options)
-    local flag = is_table(options.arguments)
+    local version = is_string(x.version)
+    local utils = require "modules.utils"
+    local flag = is_table(x.arguments)
+    local cleanup = is_list(x.cleanup)
 
     if utils.val_in_tbl("help", flag) then
         print(version)
@@ -32,7 +33,9 @@ function M.run(options)
         local dotfiles = require "modules.dotfiles"
         dotfiles.sync(conf.dot)
     elseif utils.val_in_tbl("cleanup", flag) then
-        msg "TODO create garbage collecting routine"
+        print "Collecting garbage..."
+        if debug_mode then map(cleanup, print) end
+        map(cleanup, os.execute)
     else
         print "argument missing. please run 'os help' to learn more."
     end

@@ -4,7 +4,7 @@ local app = require "modules.application"
 local conf = app.settings()
 local defaults = require "conf"
 
-conf.version = "NixOS extended rebuilder, Version 0.9.2-dev"
+conf.version = "NixOS extended rebuilder, Version 0.9.3"
 conf.help = defaults.help or "Documentation missing"
 conf.arguments = arg
 

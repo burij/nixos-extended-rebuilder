@@ -12,6 +12,7 @@ Options:
                     installs flatpaks, syncs user configuration, runs commands
                     from conf.postroutine
     userconf    :   syncs user configuration
+    cleanup     :   set of commands to collect garbage and free up space
     upgrade     :   same as rebuild + upgrades all nix packages to the latest
                     version
     version     :   shows version and current NixOS generation
@@ -32,6 +33,14 @@ conf.entry_path = "/etc/nixos/configuration.nix"
 conf.channels = {"nixos https://nixos.org/channels/nixos-unstable"}
 
 conf.flatpaks = {}
+
+conf.cleanup = {
+    "flatpak uninstall --unused",
+    "nix-collect-garbage",
+    "sudo nix-collect-garbage",
+    "nix-collect-garbage -d",
+    "sudo nix-collect-garbage -d",
+}
 
 conf.postroutine = {}
 
