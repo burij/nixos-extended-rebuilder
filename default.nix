@@ -43,15 +43,15 @@ let
 
   package = pkgs.stdenv.mkDerivation {
     pname = "os";
-    version = "0.9.2";
+    version = "0.9.3";
 
     # src = ./.;
 
     src = pkgs.fetchFromGitHub {
       owner = "burij";
       repo = "nixos-extended-rebuilder";
-      rev = "0.9.2";
-      sha256 = "sha256-y8OkJfl5jDdCrQFjW3SE3v7zdeFYzVqXxdBSs808Izc=";
+      rev = "0.9.3";
+      sha256 = "";
     };
 
     extraFile = pkgs.fetchurl {
