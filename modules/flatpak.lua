@@ -3,7 +3,7 @@ M = {}
 
 function M.install(x)
     -- creates a script to install flatpaks you wish for
-    utils = need "utils"
+    local utils = require "modules.utils"
     is_table(x)    -- target list of flatpaks
     local get_flatpaks_cmd = "flatpak list --app --columns=application"
     local flatpak_output = utils.run_and_store(get_flatpaks_cmd, "")
