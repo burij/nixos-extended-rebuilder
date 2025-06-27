@@ -52,6 +52,7 @@ environment.systemPackages = with pkgs; [
 |---------|-------------|
 | `os rebuild` | Rebuild the system |
 | `os upgrade` | Upgrade the system |
+| `os cleanup` | Garbage collection |
 | `os userconf` | Sync dotfiles |
 | `os version` | Show version and current generation |
 | `os help` | Show help information |
@@ -218,6 +219,15 @@ conf.dot.files = { -- this table will be evaluated for user settings configurati
     vst = {
         "/home/joe/.vst"
     }
+}
+
+-- if cleanup argument used, only following commands will be executed
+conf.cleanup = {
+    "flatpak uninstall --unused",
+    "nix-collect-garbage",
+    "sudo nix-collect-garbage",
+    "nix-collect-garbage -d",
+    "sudo nix-collect-garbage -d",
 }
 
 conf.postroutine = { -- list of commands which will be executed after rebuild
