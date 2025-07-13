@@ -31,6 +31,10 @@ function M.system(x)
     map(script, os.execute)
 
     os.execute("nixos-rebuild list-generations | grep current")
+    os.execute(
+            "nixos-rebuild list-generations | " ..
+            "grep 'True' | awk '{print $1, $2, $3, $4, $5}'"
+        )
 end
 
 --------------------------------------------------------------------------------
