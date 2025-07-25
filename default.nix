@@ -4,6 +4,10 @@ let
   nixpkgs = fetchTarball "https://github.com/NixOS/nixpkgs/tarball/nixos-25.05";
   pkgs = import nixpkgs { config = { }; overlays = [ ]; };
 
+  appName = "os";
+  appVersion = "0.9.4";
+
+
   luaEnv = pkgs.lua5_4.withPackages (ps: with ps; [
     luarocks
     luafilesystem
@@ -20,6 +24,7 @@ let
     shellHook = ''
       # export LUAOS="./conf.lua"
       alias run='lua main.lua'
+      alias build='nix-build -A package'
       alias os-out='./result/bin/os'
       alias os-dev='lua main.lua'
       alias make='rm result;git add .;build;git commit -m '
@@ -42,15 +47,15 @@ let
   };
 
   package = pkgs.stdenv.mkDerivation {
-    pname = "os";
-    version = "0.9.4";
+    pname = appName;
+    version = appVersion;
 
     # src = ./.;
 
     src = pkgs.fetchFromGitHub {
       owner = "burij";
       repo = "nixos-extended-rebuilder";
-      rev = "0.9.4";
+      rev = appVersion;
       sha256 = "sha256-08746k51Os8F8q86/mqGFHvUgWOYli6q/98xqmrhVUY=";
     };
 
