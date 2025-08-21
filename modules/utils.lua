@@ -19,6 +19,39 @@ end
 
 --------------------------------------------------------------------------------
 
+function M.map_arguments(command_line_argument)
+-- parses arguments from command line
+-- usage: local flags = utils.map_arguments(arg) --> flags.find("-h", "--help")
+    x = command_line_argument or _G.arg
+    local result, maping = {}, {}
+
+    for idx, text in ipairs(x) do
+    if text:find("=") then
+        local name, value = text:match("([^=]+)=(.+)")
+        value = value:match("[%s'\"]*([^'\"]*)") or value
+        maping[name] = {idx = idx, value = value}
+    else
+        maping[text] = {idx = idx, value = x[idx + 1]}
+    end
+    end
+
+    function result.empty()
+        return x[1] == nil
+    end
+
+    function result.find(arg, alt_arg)
+        return maping[arg] or maping[alt_arg or -1]
+    end
+
+    function result.value(arg, alt_arg)
+        return (result.find(arg, alt_arg) or {}).value
+    end
+
+    return result
+end
+
+--------------------------------------------------------------------------------
+
 function M.val_in_tbl(x, y)
 -- returns true, if value x is present in table y
     is_string(x)
