@@ -5,7 +5,7 @@ local conf = app.settings()
 local defaults = require "conf"
 
 conf.version = "NixOS extended rebuilder, Version 1.1-dev"
--- better way of argument handling
+-- better way to handle flags
 
 conf.help = defaults.help or "Documentation missing"
 conf.arguments = arg

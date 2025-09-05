@@ -26,13 +26,13 @@ function M.map_arguments(command_line_argument)
     local result, maping = {}, {}
 
     for idx, text in ipairs(x) do
-    if text:find("=") then
-        local name, value = text:match("([^=]+)=(.+)")
-        value = value:match("[%s'\"]*([^'\"]*)") or value
-        maping[name] = {idx = idx, value = value}
-    else
-        maping[text] = {idx = idx, value = x[idx + 1]}
-    end
+        if text:find("=") then
+            local name, value = text:match("([^=]+)=(.+)")
+            value = value:match("[%s'\"]*([^'\"]*)") or value
+            maping[name] = {idx = idx, value = value}
+        else
+            maping[text] = {idx = idx, value = x[idx + 1]}
+        end
     end
 
     function result.empty()
