@@ -1,3 +1,6 @@
+# nix build
+result
+
 # Compiled Lua sources
 luac.out
 
