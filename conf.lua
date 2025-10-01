@@ -15,6 +15,8 @@ Options:
     cleanup     :   set of commands to collect garbage and free up space
     upgrade     :   same as rebuild + upgrades all nix packages to the latest
                     version
+    edit        :   opens conffiguration file. editor can be choosen with
+                    os.editor (string) option
     version     :   shows version and current NixOS generation
 
 $LUAOS is used to determine path of the configuration file. If the variable not
