@@ -7,7 +7,7 @@ local defaults = require "conf"
 conf.version = "NixOS extended rebuilder, Version 1.1-dev"
 -- better way to handle flags
 -- 'os edit': new command to open configuration with custom editor
--- TODO os.editor: non mandatory option to define custom editor
+-- conf.editor: non mandatory option to define custom editor
 -- TODO updated README
 
 conf.help = defaults.help or "Documentation missing"

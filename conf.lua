@@ -50,5 +50,7 @@ conf.dot.gnome = "desktop"
 
 conf.dot.files = {}
 
+conf.editor = "nano"
+
 --------------------------------------------------------------------------------
 return conf
