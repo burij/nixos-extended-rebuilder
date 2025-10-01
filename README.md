@@ -52,6 +52,7 @@ environment.systemPackages = with pkgs; [
 |---------|-------------|
 | `os rebuild` | Rebuild the system |
 | `os upgrade` | Upgrade the system |
+| `os edit` | Open current configuration file |
 | `os cleanup` | Garbage collection |
 | `os userconf` | Sync dotfiles |
 | `os version` | Show version and current generation |
@@ -233,6 +234,8 @@ conf.cleanup = {
 conf.postroutine = { -- list of commands which will be executed after rebuild
     "sudo flatpak override --filesystem=host org.gnome.Builder",
 }
+
+conf.editor = { "nano" -- editor, which opens current configuration file, if 'os edit' is executed }
 return conf
 ```
 
