@@ -28,6 +28,10 @@ function M.run(options)
     if flag.find("rebuild", "upgrade") then
         local rebuild = require "modules.rebuild"
         rebuild.system(conf)
+    elseif flag.find("edit") then
+        local x = is_string(conf.editor or "nano")
+        if debug_mode then msg("Current user editor was set to " .. x) end
+        os.execute(x .. " " .. os.getenv("LUAOS"))
     elseif flag.find("userconf") then
         local dotfiles = require "modules.dotfiles"
         dotfiles.sync(conf.dot)
