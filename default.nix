@@ -5,7 +5,7 @@ let
   pkgs = import nixpkgs { config = { }; overlays = [ ]; };
 
   appName = "os";
-  appVersion = "1.1";
+  appVersion = "1.2";
 
 
   luaEnv = pkgs.lua5_4.withPackages (ps: with ps; [
@@ -50,7 +50,7 @@ let
       owner = "burij";
       repo = "nixos-extended-rebuilder";
       rev = appVersion;
-      sha256 = "sha256-qdgWvsW4oaas5wE9vzCGxtyXVOikpl1vyIQ+twHM1zY=";
+      sha256 = "sha256-XZh9KiAwbzsV9PSAQxJ3ua7QveppA+UE6YdwwYNJp4Y=";
     };
 
     extraFile = pkgs.fetchurl {
