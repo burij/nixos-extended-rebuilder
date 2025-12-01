@@ -1,7 +1,7 @@
 { pkgs ? import <nixpkgs> { } }:
 
 let
-  nixpkgs = fetchTarball "https://github.com/NixOS/nixpkgs/tarball/nixos-25.05";
+  nixpkgs = fetchTarball "https://github.com/NixOS/nixpkgs/tarball/nixos-25.11";
   pkgs = import nixpkgs { config = { }; overlays = [ ]; };
 
   appName = "os";
@@ -32,8 +32,8 @@ let
 
       cp ${pkgs.fetchurl {
         url = "https://raw.githubusercontent.com/burij/"
-          +"lua-light-wings/refs/tags/v.0.2.2/modules/lua-light-wings.lua";
-        sha256 = "sha256-mRD1V0ERFi4gmE/VfAnd1ujoyoxlA0vCj9fJNSCtPkw=";
+          +"lua-light-wings/refs/tags/v.0.4/modules/lua-light-wings.lua";
+        sha256 = "sha256-Tczj+XNIobX64Cncm0/rbDwMizUDhRmeyjFwrJrDCco=";
       }} ./modules/lua-light-wings.lua
 
       nixpkgs-fmt default.nix
@@ -55,8 +55,8 @@ let
 
     extraFile = pkgs.fetchurl {
       url = "https://raw.githubusercontent.com/burij/"
-        + "lua-light-wings/refs/tags/v.0.2.2/modules/lua-light-wings.lua";
-      sha256 = "sha256-mRD1V0ERFi4gmE/VfAnd1ujoyoxlA0vCj9fJNSCtPkw=";
+        +"lua-light-wings/refs/tags/v.0.4/modules/lua-light-wings.lua";
+      sha256 = "sha256-Tczj+XNIobX64Cncm0/rbDwMizUDhRmeyjFwrJrDCco=";
     };
 
     nativeBuildInputs = [ pkgs.makeWrapper ];
